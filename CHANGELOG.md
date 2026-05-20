@@ -1,77 +1,91 @@
 # Changelog
-Tutte le modifiche rilevanti a **svg-panzoom** verranno documentate in questo file.
 
-Il formato è ispirato a [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/) e il versionamento segue (per quanto applicabile) [Semantic Versioning](https://semver.org/lang/it/).
+All notable changes to **svg-panzoom** will be documented in this file.
+
+The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
 ## [0.3.0] - 2026-05-15
+
 ### Fixed
-- **`src/index.js`**: `api.zoomIn()`, `api.zoomOut()` e `api.zoomTo()` usavano `origin || null` come default, lasciando l'origin a `null` quando chiamati senza argomenti (es. clic sui pulsanti). L'engine, ricevendo `null`, applicava lo zoom senza aggiustare la pan position, rendendo l'angolo superiore sinistro del contenuto il centro de facto dello zoom.
-  - Aggiunto helper `getViewportCenter()` che calcola il centro del container in SVG user units, riutilizzando la stessa conversione CTM-based già usata da `getOriginFromEvent`.
-  - `api.zoomIn(origin)`, `api.zoomOut(origin)`, `api.zoomTo(scale, origin)` ora defaultano a `getViewportCenter()` quando `origin` non è fornito (operatore `??`).
-  - Il comportamento per wheel zoom e zoom programmatico con origin esplicita è invariato.
+
+- **`src/index.js`**: `api.zoomIn()`, `api.zoomOut()` and `api.zoomTo()` were using `origin || null` as default, leaving origin as `null` when called without arguments (e.g. button clicks). The engine, receiving `null`, applied zoom without adjusting the pan position, making the upper-left corner of the content the de facto center of zoom.
+  - Added `getViewportCenter()` helper that calculates the container center in SVG user units, reusing the same CTM-based conversion already used by `getOriginFromEvent`.
+  - `api.zoomIn(origin)`, `api.zoomOut(origin)`, `api.zoomTo(scale, origin)` now default to `getViewportCenter()` when `origin` is not provided (using the `??` operator).
+  - Behavior for wheel zoom and programmatic zoom with explicit origin is unchanged.
 
 ### Added
-- Esempio di utilizzo per Vue e React.
+
+- Usage examples for Vue and React.
 
 ### Changed
+
 - `package.json`: bumped `version` → `0.3.0`.
 
 ---
 
 ## [0.2.0] - 2026-05-15
+
 ### Fixed
-- **`examples/basic/main.js`**: rimossi i valori hardcoded `minZoom: 0.4` e `zoomStep: 1.2` che venivano passati esplicitamente a `createSvgPanZoom()`, sovrascrivendo silenziosamente i `DEFAULT_OPTIONS` definiti in `src/core/state.js`. La priorità `opzione esplicita > DEFAULT_OPTIONS` rendeva inefficace qualsiasi modifica ai valori di default della libreria durante lo sviluppo locale. L'esempio ora eredita `minZoom` e `zoomStep` direttamente dai default (`minZoom: 0.0001`, `zoomStep: 2.0`).
+
+- **`examples/basic/main.js`**: removed hardcoded values `minZoom: 0.4` and `zoomStep: 1.2` that were explicitly passed to `createSvgPanZoom()`, silently overriding the `DEFAULT_OPTIONS` defined in `src/core/state.js`. The priority `explicit option > DEFAULT_OPTIONS` made any modification to the library's default values ineffective during local development. The example now inherits `minZoom` and `zoomStep` directly from the defaults (`minZoom: 0.0001`, `zoomStep: 1.25`).
 
 ### Changed
+
 - `package.json`: bumped `version` → `0.2.0`.
 
 ### Notes
-- La priorità delle opzioni segue la regola: **opzione passata esplicitamente > `DEFAULT_OPTIONS` in `state.js`**. Non passare un'opzione equivale a usare il default; passarla esplicitamente la sovrascrive sempre, indipendentemente dal valore nei default.
+
+- Option priority follows the rule: **explicitly passed option > `DEFAULT_OPTIONS` in `state.js`**. Not passing an option is equivalent to using the default; passing it explicitly always overrides it, regardless of the value in the defaults.
 
 ---
 
 ## [0.1.0] - 2026-05-15
+
 ### Added
-- Setup iniziale come libreria **framework-agnostic** (ES modules) con build in **Vite library mode**:
-  - Bundle ESM (`dist/svg-panzoom.js`)
-  - Bundle CJS (`dist/svg-panzoom.cjs`)
-  - Export CSS (`./style.css`).
-- Factory pubblica `createSvgPanZoom(options)` con istanza e API:
+
+- Initial setup as a **framework-agnostic** library (ES modules) with **Vite library mode** build:
+  - ESM bundle (`dist/svg-panzoom.js`)
+  - CJS bundle (`dist/svg-panzoom.cjs`)
+  - CSS export (`./style.css`).
+- Public factory `createSvgPanZoom(options)` with instance and API:
   - `zoomIn()`, `zoomOut()`, `zoomTo(scale, origin?)`
   - `panBy(dx, dy)`, `panTo(x, y)`
   - `reset()`, `fit()`, `center()`
   - `getState()`, `getOptions()`
   - `on(event, callback)`, `off(event, callback)`
   - `destroy()`.
-- Core separato dalla manipolazione DOM:
-  - `src/core/*` gestisce stato, bounds, eventi, engine e logiche di gesture (wheel/pointer).
-  - `src/dom/*` gestisce mount, renderer e observer (misure e target viewport).
-- Supporto MVP:
-  - Pan con drag via **Pointer Events**
-  - Zoom via **wheel** con normalizzazione minima (deltaMode)
+- Core separated from DOM manipulation:
+  - `src/core/*` handles state, bounds, events, engine and gesture logic (wheel/pointer).
+  - `src/dom/*` handles mount, renderer and observer (measurements and viewport target).
+- MVP support:
+  - Pan with drag via **Pointer Events**
+  - Zoom via **wheel** with minimal normalization (deltaMode)
   - Min/max zoom (`minZoom`, `maxZoom`)
-  - Bounds base con padding (`bounds.enabled`, `bounds.padding`)
-  - Eventi custom (`change`, `zoom`, `dragstart`, `drag`, `dragend`, `reset`, `fit`, `center`, `measure`, `wheel`).
-- SCSS iniziale con convenzione BEM prefisso `spz`:
-  - classi base: `.spz`, `.spz__canvas`, `.spz__svg`, `.spz__viewport`, `.spz__controls`, `.spz__button`.
-- Esempio `examples/basic/` per test manuale:
-  - HTML + JS con SVG inline e controlli.
+  - Basic bounds with padding (`bounds.enabled`, `bounds.padding`)
+  - Custom events (`change`, `zoom`, `dragstart`, `drag`, `dragend`, `reset`, `fit`, `center`, `measure`, `wheel`).
+- Initial SCSS with BEM convention prefix `spz`:
+  - Base classes: `.spz`, `.spz__canvas`, `.spz__svg`, `.spz__viewport`, `.spz__controls`, `.spz__button`.
+- Example `examples/basic/` for manual testing:
+  - HTML + JS with inline SVG and controls.
 
 ### Changed
-- Zoom migliorato: introdotta animazione smooth (interpolazione via `requestAnimationFrame`) per rendere lo zoom meno “a scatti”.
-  - Nuova opzione `zoomDuration` (ms) per controllare la durata della transizione.
-  - Nuove opzioni per coda inerziale: `zoomInertia`, `zoomInertiaDuration`.
-  - Nuova opzione: `wheelZoomIntensity` per rendere lo zoom wheel continuo (meno a step) e più fluido.
-  - Lo zoom wheel preferisce un percorso continuo basato su delta (`engine.wheelZoomBy`) e applica una piccola inerzia dopo i tick della rotellina.
-- Pan migliorato: aggiunta inerzia (piccolo “glide”) al termine del drag.
-  - Nuove opzioni: `inertiaPan`, `inertiaDuration`, `inertiaFriction`.
-- Bounds migliorati: possibilità di far uscire il contenuto dalla viewport in tutte le direzioni.
-  - Nuova opzione: `bounds.overflow` (px) oppure `true` per overflow illimitato (contenuto può uscire completamente).
+
+- Improved zoom: introduced smooth animation (interpolation via `requestAnimationFrame`) to make zoom less "jumpy".
+  - New option `zoomDuration` (ms) to control transition duration.
+  - New options for momentum: `zoomInertia`, `zoomInertiaDuration`.
+  - New option: `wheelZoomIntensity` to make wheel zoom continuous (less stepped) and smoother.
+  - Wheel zoom prefers a continuous path based on delta (`engine.wheelZoomBy`) and applies small inertia after wheel ticks.
+- Improved pan: added inertia (small "glide") at the end of drag.
+  - New options: `inertiaPan`, `inertiaDuration`, `inertiaFriction`.
+- Improved bounds: ability to let content exit the viewport in all directions.
+  - New option: `bounds.overflow` (px) or `true` for unlimited overflow (content can exit completely).
 
 ### Fixed
-- SCSS: risolto errore `Undefined variable` in `_mixins.scss` aggiungendo `@use './variables' as *;`.
-- Tooling locale: aggiunti script di root per eseguire `dev/build` con Node moderno (utile in ambienti con Node legacy sul PATH).
+
+- SCSS: resolved `Undefined variable` error in `_mixins.scss` by adding `@use './variables' as *;`.
+- Local tooling: added root scripts to run `dev/build` with modern Node (useful in environments with legacy Node on PATH).
 
 ### Notes / Known issues
-- **pnpm** può bloccare build scripts di dipendenze (es. `esbuild`, `@parcel/watcher`) se non approvati. In caso di errori simili, abilitare gli script (es. tramite `pnpm approve-builds`) oppure usare lo script root che forza Node in PATH.
-- Funzionalità future previste (non incluse in 0.1.x): pinch-zoom, controlli UI opzionali, animazioni avanzate, wrapper React/Vue.
+
+- **pnpm** may block build scripts of dependencies (e.g. `esbuild`, `@parcel/watcher`) if not approved. In case of similar errors, enable scripts (e.g. via `pnpm approve-builds`) or use the root script that forces Node on PATH.
+- Future features planned (not included in 0.1.x): pinch-zoom, optional UI controls, advanced animations, React/Vue wrappers.

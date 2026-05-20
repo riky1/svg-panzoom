@@ -1,10 +1,10 @@
 # svg-panzoom
 
-Libreria **framework-agnostic** (JavaScript ES Modules) per aggiungere **pan (drag)** e **zoom (wheel)** a SVG inline nel DOM.
+**Framework-agnostic** library (JavaScript ES Modules) for adding **pan (drag)** and **zoom (wheel)** to inline SVG in the DOM.
 
-Obiettivo: core senza dipendenze da framework, API semplice, build come pacchetto npm.
+Goal: framework-free core, simple API, built as an npm package.
 
-> Stato: MVP (v0.1) — drag pan + wheel zoom + metodi base + bounds semplici.
+> Status: MVP (v0.3) — drag pan + wheel zoom + base methods + simple bounds.
 
 ## Install
 
@@ -14,7 +14,7 @@ npm i svg-panzoom
 
 ## Usage
 
-### Vanilla (qualsiasi framework)
+### Vanilla (any framework)
 
 ```js
 import { createSvgPanZoom } from 'svg-panzoom';
@@ -22,7 +22,7 @@ import 'svg-panzoom/style.css';
 
 const instance = createSvgPanZoom({
   element: document.querySelector('#myContainerOrSvg'),
-  viewportSelector: '[data-spz-viewport]', // opzionale
+  viewportSelector: '[data-spz-viewport]', // optional
   minZoom: 0.4,
   maxZoom: 6,
   zoomStep: 1.2,
@@ -34,7 +34,7 @@ const instance = createSvgPanZoom({
 });
 ```
 
-📁 **Esempio completo:** [`examples/basic/`](./examples/basic/)
+📁 **Full example:** [`examples/basic/`](./examples/basic/)
 
 ### Vue 3 (Composition API)
 
@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
 </script>
 ```
 
-📁 **Esempio completo:** [`examples/vue/SvgPanZoomDemo.vue`](./examples/vue/SvgPanZoomDemo.vue)
+📁 **Full example:** [`examples/vue/SvgPanZoomDemo.vue`](./examples/vue/SvgPanZoomDemo.vue)
 
 ### React (Hooks)
 
@@ -106,14 +106,14 @@ export default function SvgPanZoom() {
 }
 ```
 
-📁 **Esempio completo:** [`examples/react/SvgPanZoomDemo.jsx`](./examples/react/SvgPanZoomDemo.jsx)
+📁 **Full example:** [`examples/react/SvgPanZoomDemo.jsx`](./examples/react/SvgPanZoomDemo.jsx)
 
 ### Common API Usage
 
-Una volta creata l'istanza (con uno qualsiasi dei metodi sopra), puoi usare i seguenti metodi e ascoltare gli eventi:
+Once the instance is created (using any of the methods above), you can use the following methods and listen to events:
 
 ```js
-// Metodi
+// Methods
 instance.zoomIn();
 instance.zoomOut();
 instance.zoomTo(2);
@@ -131,22 +131,22 @@ off(); // unsubscribe
 instance.destroy();
 ```
 
-### Markup consigliato (viewport)
+### Recommended markup (viewport)
 
-Per applicare la trasformazione ad un gruppo interno:
+To apply the transformation to an internal group:
 
 ```html
 <svg viewBox="0 0 800 450">
   <g data-spz-viewport="true">
-    <!-- contenuto -->
+    <!-- content -->
   </g>
 </svg>
 ```
 
-Se `viewportSelector` non viene fornito, la libreria prova a usare:
+If `viewportSelector` is not provided, the library tries to use:
 1) `[data-spz-viewport]`
-2) il primo `<g>`
-3) altrimenti crea un `<g data-spz-viewport>` e sposta dentro gli elementi (escludendo `<defs>`).
+2) the first `<g>`
+3) otherwise creates a `<g data-spz-viewport>` and moves elements inside (excluding `<defs>`).
 
 ## API
 
@@ -154,7 +154,7 @@ Factory:
 
 - `createSvgPanZoom(options)`
 
-Metodi istanza:
+Instance methods:
 
 - `zoomIn(origin?)`
 - `zoomOut(origin?)`
@@ -166,34 +166,41 @@ Metodi istanza:
 - `center()`
 - `getState()`
 - `getOptions()`
-- `on(event, callback)` → ritorna una funzione `off()`
+- `on(event, callback)` → returns an `off()` function
 - `off(event, callback)`
 - `destroy()`
 
 ### Options
 
-- `element` (**required**) `Element | SVGSVGElement`: container o svg inline
-- `viewportSelector` `string | null`: selettore del viewport (`<g>`) su cui applicare la transform
-- `minZoom` `number` (default `0.2`)
+- `element` (**required**) `Element | SVGSVGElement`: container or inline svg
+- `viewportSelector` `string | null`: selector of the viewport (`<g>`) to apply the transform
+- `minZoom` `number` (default `0.0001`)
 - `maxZoom` `number` (default `10`)
 - `initialZoom` `number` (default `1`)
-- `zoomStep` `number` (default `1.2`)
+- `zoomStep` `number` (default `1.25`)
+- `zoomDuration` `number` (default `200`)
+- `zoomInertia` `boolean` (default `true`)
+- `zoomInertiaDuration` `number` (default `600`)
+- `wheelZoomIntensity` `number` (default `0.003`)
 - `wheelZoom` `boolean` (default `true`)
 - `panEnabled` `boolean` (default `true`)
-- `bounds` `{ enabled: boolean, padding: number }` (default `{enabled:true,padding:0}`)
+- `inertiaPan` `boolean` (default `true`)
+- `inertiaDuration` `number` (default `300`)
+- `inertiaFriction` `number` (default `0.92`)
+- `bounds` `{ enabled: boolean, padding: number, overflow?: number | boolean }` (default `{enabled:true,padding:0,overflow:0}`)
 - `fitOnInit` `boolean` (default `false`)
 - `centerOnInit` `boolean` (default `false`)
 
 ### Events
 
-Eventi custom (emessi dall’istanza):
+Custom events emitted by the instance:
 
 - `change` → `{ scale, x, y, dragging, size }`
 - `zoom` → `{ scale }`
 - `reset` → state
 - `fit` → state
 - `center` → state
-- `measure` → misure aggiornate
+- `measure` → updated measurements
 - `dragstart` / `drag` / `dragend`
 - `wheel`
 
@@ -204,9 +211,9 @@ npm install
 npm run dev
 ```
 
-Apri l’esempio: `examples/basic/index.html` (Vite in dev serve anche gli import SCSS).
+Open the example: `examples/basic/index.html` (Vite in dev mode also serves SCSS imports).
 
-## Build (libreria)
+## Build (library)
 
 ```bash
 npm run build
@@ -215,13 +222,13 @@ npm run build
 Output:
 - `dist/svg-panzoom.js` (ESM)
 - `dist/svg-panzoom.cjs` (CJS)
-- `dist/style.css` (CSS compilato)
+- `dist/style.css` (compiled CSS)
 
-## Note / miglioramenti futuri
+## Notes / future improvements
 
-- Bounds: attualmente semplici e in screen-space (MVP).
-- Ripristino DOM: se viene creato un viewport `<g>`, al `destroy()` non viene ripristinata la struttura originale (v2).
-- Pinch zoom (Pointer Events multipli)
-- Wrapper React/Vue
-- Controlli UI opzionali
-- Animazioni / easing
+- Bounds: currently simple and in screen-space (MVP).
+- DOM restoration: if a viewport `<g>` is created, calling `destroy()` does not restore the original structure (v2).
+- Pinch zoom (multiple Pointer Events)
+- React/Vue wrappers
+- Optional UI controls
+- Advanced animations / easing

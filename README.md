@@ -206,6 +206,77 @@ Custom events emitted by the instance:
 - `dragstart` / `drag` / `dragend`
 - `wheel`
 
+## Understanding Coordinates
+
+### State coordinates (x, y, scale)
+
+All coordinates returned by `getState()` and passed to events use **SVG user units** (the viewBox coordinate system), not screen pixels.
+
+```js
+const state = instance.getState();
+console.log(state);
+// {
+//   scale: 1.5,        // zoom level (1 = 100%, 2 = 200%)
+//   x: 100,            // pan position in SVG user units (viewBox space)
+//   y: 50,             // pan position in SVG user units (viewBox space)
+//   dragging: false,   // is pointer actively dragging
+//   size: { width: 800, height: 450 }  // current viewport dimensions (screen pixels)
+// }
+```
+
+**Important**: `x` and `y` represent the position of the top-left corner of the viewport in SVG coordinates. When you use methods like `panTo(100, 50)`, you're moving the viewport to show SVG position `(100, 50)` at the top-left.
+
+### Bounds behavior
+
+Bounds are calculated in screen-space and applied as **min/max pan limits**. The `padding` option adds a margin around the viewable content:
+
+- `bounds.enabled: true` — enforces min/max pan boundaries
+- `bounds.padding: 20` — adds 20px margin around content edges
+- `bounds.overflow: 50` or `true` — allows content to exit viewport by specified pixels or completely
+
+When bounds are tight, panning is prevented from moving outside content; with overflow, you can "overshoot" and see blank space.
+
+## Limitations & Browser Support
+
+### Supported targets
+
+- ✅ **Inline SVG** in the DOM (recommended: with `<g data-spz-viewport>` or first `<g>` as viewport)
+- ❌ **External SVG files** (loaded via `<object>` or `<iframe>`)
+- ❌ **SVG images** (loaded via `<img>`)
+
+### Browser compatibility
+
+Tested and supported:
+
+- ✅ **Chrome/Edge** (latest)
+- ✅ **Firefox** (latest)
+- ✅ **Safari** (latest)
+- ✅ **iOS Safari** (latest)
+
+### Known limitations and planned features
+
+- **DOM restoration**: When the library creates a `<g data-spz-viewport>` automatically, calling `destroy()` does **not** restore the original DOM structure. Workaround: provide an explicit `viewportSelector` if you need precise control.
+- **Pinch zoom**: Multi-touch pinch gesture is not yet supported (planned for v2). Single-touch pan works on mobile.
+- **Custom easing**: Animation uses linear interpolation; custom easing functions are not yet supported (planned for v2).
+- **Bounds**: Current bounds implementation is MVP (screen-space only). Advanced bounds with rotation or skew are not supported.
+- **Mouse wheel normalization**: Wheel event delta normalization is minimal (supports `deltaMode` 0/1/2). Advanced wheel behaviors may vary across browsers.
+
+### Cleanup and memory
+
+Always call `destroy()` when the instance is no longer needed (e.g., in component unmount handlers):
+
+```js
+// Vue
+onBeforeUnmount(() => instance.value?.destroy());
+
+// React
+useEffect(() => {
+  return () => instanceRef.current?.destroy();
+}, []);
+```
+
+`destroy()` is idempotent and safe to call multiple times. It removes all listeners, observers, and animation loops to prevent memory leaks.
+
 ## Dev
 
 ```bash

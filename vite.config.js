@@ -13,7 +13,9 @@ export default defineConfig({
     outDir: process.env.BUILD_MODE === 'demo' ? 'docs' : 'dist',
     emptyOutDir: true,
     sourcemap: true,
-    rollupOptions: process.env.BUILD_MODE === 'demo' ? {} : {
+    rollupOptions: process.env.BUILD_MODE === 'demo' ? {
+      input: path.resolve(__dirname, 'examples/basic/index.html')
+    } : {
       // No external deps in core for now
       external: [],
       output: {

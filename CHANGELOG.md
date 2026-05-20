@@ -4,6 +4,23 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-05-20
+
+### Added
+
+- GitHub Pages deployment workflow: automated build and deployment on every push to main branch.
+- `.gitignore` file with comprehensive exclusions for dependencies, build output, IDE files, and OS-specific files.
+- GitHub Pages setup guide (`GITHUB_PAGES_SETUP.md`) with complete instructions.
+- New npm scripts: `build:demo` and `dev:demo` for demo-specific development and building.
+
+### Changed
+
+- `vite.config.js`: updated to support dual modes (library build and demo build via `BUILD_MODE` environment variable).
+- `package.json`: version bumped to `0.4.0`, added demo-related scripts.
+- English translations: README.md and CHANGELOG.md fully translated to English (from Italian).
+
+---
+
 ## [0.3.0] - 2026-05-15
 
 ### Fixed

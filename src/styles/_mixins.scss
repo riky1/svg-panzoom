@@ -1,0 +1,21 @@
+@use './variables' as *;
+
+@mixin spz-control-button {
+  appearance: none;
+  border: 1px solid $spz-border;
+  background: $spz-control-bg;
+  color: $spz-control-fg;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+
+  &:hover {
+    background: $spz-control-bg-hover;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}

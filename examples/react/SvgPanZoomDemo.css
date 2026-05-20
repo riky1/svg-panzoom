@@ -1,0 +1,32 @@
+.svg-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.controls {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  gap: 8px;
+}
+
+.demo {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+button {
+  appearance: none;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f8fafc;
+}

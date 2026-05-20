@@ -7,8 +7,97 @@ import { createObserver } from './dom/observer.js';
 import { createRenderer } from './dom/renderer.js';
 
 /**
- * Public factory
- * @param {import('./core/state.js').DEFAULT_OPTIONS & any} options
+ * @typedef {Object} BoundsConfig
+ * @property {boolean} [enabled=true]
+ * @property {number} [padding=0]
+ * @property {number|boolean} [overflow=0]
+ */
+
+/**
+ * @typedef {Object} SvgPanZoomOptions
+ * @property {Element|SVGSVGElement} element - Required: container or inline SVG
+ * @property {string|null} [viewportSelector=null] - CSS selector for viewport <g>
+ * @property {number} [minZoom=0.0001] - Minimum zoom level
+ * @property {number} [maxZoom=10] - Maximum zoom level
+ * @property {number} [initialZoom=1] - Initial zoom level
+ * @property {number} [zoomStep=1.25] - Zoom step for zoomIn/zoomOut
+ * @property {number} [zoomDuration=200] - Duration of zoom animation (ms)
+ * @property {boolean} [zoomInertia=true] - Enable zoom momentum
+ * @property {number} [zoomInertiaDuration=600] - Duration of zoom inertia (ms)
+ * @property {number} [wheelZoomIntensity=0.003] - Wheel zoom sensitivity
+ * @property {boolean} [wheelZoom=true] - Enable mouse wheel zoom
+ * @property {boolean} [panEnabled=true] - Enable pan (drag) functionality
+ * @property {boolean} [inertiaPan=true] - Enable pan momentum
+ * @property {number} [inertiaDuration=300] - Duration of pan inertia (ms)
+ * @property {number} [inertiaFriction=0.92] - Friction multiplier for inertia
+ * @property {BoundsConfig} [bounds] - Bounds configuration
+ * @property {boolean} [fitOnInit=false] - Auto-fit content on init
+ * @property {boolean} [centerOnInit=false] - Auto-center content on init
+ */
+
+/**
+ * @typedef {Object} SvgPanZoomState
+ * @property {number} scale - Current zoom level
+ * @property {number} x - Current pan X position (CSS px)
+ * @property {number} y - Current pan Y position (CSS px)
+ * @property {boolean} dragging - Whether drag is active
+ * @property {Object} size - Size measurements
+ * @property {Object} size.container - Container dimensions
+ * @property {number} size.container.width
+ * @property {number} size.container.height
+ * @property {Object} size.svg - SVG element dimensions
+ * @property {number} size.svg.width
+ * @property {number} size.svg.height
+ * @property {Object} size.viewportBBox - Viewport bbox in SVG coords
+ * @property {number} size.viewportBBox.x
+ * @property {number} size.viewportBBox.y
+ * @property {number} size.viewportBBox.width
+ * @property {number} size.viewportBBox.height
+ */
+
+/**
+ * @typedef {Object} ZoomOrigin
+ * @property {number} x - Origin X coordinate
+ * @property {number} y - Origin Y coordinate
+ */
+
+/**
+ * @typedef {(payload?: any) => void} EventCallback
+ */
+
+/**
+ * @typedef {Object} SvgPanZoomInstance
+ * @property {(origin?: ZoomOrigin) => void} zoomIn - Zoom in by zoomStep
+ * @property {(origin?: ZoomOrigin) => void} zoomOut - Zoom out by zoomStep
+ * @property {(scale: number, origin?: ZoomOrigin) => void} zoomTo - Zoom to exact scale
+ * @property {(dx: number, dy: number) => void} panBy - Pan by delta
+ * @property {(x: number, y: number) => void} panTo - Pan to absolute position
+ * @property {() => void} reset - Reset to initial state
+ * @property {() => void} fit - Fit content in viewport
+ * @property {() => void} center - Center content in viewport
+ * @property {() => SvgPanZoomState} getState - Get current state
+ * @property {() => SvgPanZoomOptions} getOptions - Get normalized options
+ * @property {(event: string, callback: EventCallback) => () => void} on - Subscribe to event
+ * @property {(event: string, callback: EventCallback) => void} off - Unsubscribe from event
+ * @property {() => void} destroy - Cleanup instance
+ */
+
+/**
+ * Create an svg-panzoom instance for pan/zoom control of inline SVG.
+ *
+ * @param {SvgPanZoomOptions} options - Configuration options
+ * @returns {SvgPanZoomInstance} - Public API instance
+ * @throws {Error} If options.element is missing or invalid
+ *
+ * @example
+ * import { createSvgPanZoom } from 'svg-panzoom';
+ * const instance = createSvgPanZoom({
+ *   element: document.querySelector('#myContainer'),
+ *   minZoom: 0.4,
+ *   maxZoom: 6
+ * });
+ * instance.zoomIn();
+ * instance.panBy(10, 20);
  */
 export function createSvgPanZoom(options) {
   const normalized = normalizeOptions(options);

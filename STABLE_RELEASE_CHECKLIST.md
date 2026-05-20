@@ -1,18 +1,17 @@
-# Checklist rilascio “prima versione stabile” (GitHub + npm)
+# Checklist rilascio "prima versione stabile" (GitHub + npm)
 
 Questa checklist serve per arrivare a una **v1 base stabile** di `svg-panzoom`, pronta da pubblicare su **GitHub** e **npm**.
 
-Spunta i punti man mano che vengono completati.
 
 ---
 
 ## 1) Stabilità API (zero breaking changes)
-- [ ] Congelare API pubblica: `createSvgPanZoom(options)` + metodi/eventi attuali (nessuna rinomina o cambio semantico).
-- [ ] Definire e confermare il contratto di supporto:
-  - [ ] target supportato: **inline SVG nel DOM** (non `<object>`, non SVG esterni).
-  - [ ] `options.element`: accetta container o `<svg>` (documentare requisiti e differenze).
-  - [ ] `viewportSelector`: priorità di selezione e cosa succede quando la lib crea automaticamente un `<g data-spz-viewport>`.
-- [ ] Definire browser minimi supportati (es. Chrome/Edge/Firefox/Safari + iOS Safari) e assumerli come baseline di test.
+- [x] Congelare API pubblica: `createSvgPanZoom(options)` + metodi/eventi attuali (nessuna rinomina o cambio semantico).
+- [x] Definire e confermare il contratto di supporto:
+  - [x] target supportato: **inline SVG nel DOM** (non `<object>`, non SVG esterni).
+  - [x] `options.element`: accetta container o `<svg>` (documentare requisiti e differenze).
+  - [x] `viewportSelector`: priorità di selezione e cosa succede quando la lib crea automaticamente un `<g data-spz-viewport>`.
+- [x] Definire browser minimi supportati (es. Chrome/Edge/Firefox/Safari + iOS Safari) e assumerli come baseline di test.
 
 ---
 
@@ -24,9 +23,9 @@ Spunta i punti man mano che vengono completati.
   - [ ] `requestAnimationFrame`/loop di render.
 - [ ] Gestire correttamente SVG non renderizzato / misure non pronte:
   - [ ] `getBBox()` può fallire: definire comportamento (no-op / retry) e renderlo consistente.
-  - [ ] `getScreenCTM()` può essere `null` o l’inversione può fallire: fallback coerente e testato (Safari/iOS).
+  - [ ] `getScreenCTM()` può essere `null` o l'inversione può fallire: fallback coerente e testato (Safari/iOS).
 - [ ] Bounds:
-  - [ ] nessun “blocco” del pan quando bbox=0 o misure non disponibili.
+  - [ ] nessun "blocco" del pan quando bbox=0 o misure non disponibili.
   - [ ] padding/overflow: comportamento atteso chiarito (e testato).
 - [ ] Input events:
   - [ ] wheel: prevenire scroll pagina quando opportuno (policy chiara, listener non duplicati).
@@ -47,16 +46,16 @@ Spunta i punti man mano che vengono completati.
 
 ---
 
-## 4) Test (minimo per “stabile”)
+## 4) Test (minimo per "stabile")
 > Obiettivo: coprire invarianti core + regressioni più probabili.
 
-- [ ] Aggiungere unit test (consigliato: **Vitest**):
-  - [ ] `normalizeOptions` (default, min/max, bounds).
-  - [ ] `engine` (zoomTo/zoomIn/zoomOut, panBy/panTo, bounds invariants).
-  - [ ] utils (`clamp`, `raf`, ecc.) dove utile.
-- [ ] Aggiungere test DOM-like (jsdom) per:
-  - [ ] mount/viewport selection + creazione `<g data-spz-viewport>`.
-  - [ ] `destroy()` (nessuna eccezione, no listeners “orfani”).
+- [x] Aggiungere unit test (consigliato: **Vitest**):
+  - [x] `normalizeOptions` (default, min/max, bounds).
+  - [x] `engine` (zoomTo/zoomIn/zoomOut, panBy/panTo, bounds invariants).
+  - [x] utils (`clamp`, `raf`, ecc.) dove utile.
+- [x] Aggiungere test DOM-like (jsdom) per:
+  - [x] mount/viewport selection + creazione `<g data-spz-viewport>`.
+  - [x] `destroy()` (nessuna eccezione, no listeners "orfani").
 - [ ] Test manuale ripetibile sulla demo:
   - [ ] Chrome (desktop): wheel zoom + drag pan.
   - [ ] Firefox (desktop): wheel + drag.
@@ -67,23 +66,23 @@ Spunta i punti man mano che vengono completati.
 
 ## 5) Performance / regressioni
 - [ ] Renderer:
-  - [ ] update via `requestAnimationFrame` (batching) e senza “layout thrash” evidente.
+  - [ ] update via `requestAnimationFrame` (batching) e senza "layout thrash" evidente.
   - [ ] non scrive DOM se lo stato non cambia (o minimizza le scritture).
 - [ ] Stress test wheel:
   - [ ] nessuna crescita di memoria / listener duplicati.
-- [ ] (Opzionale) esempio “SVG pesante” per verifica performance (molti nodi).
+- [ ] (Opzionale) esempio "SVG pesante" per verifica performance (molti nodi).
 
 ---
 
 ## 6) Documentazione pronta per utenti
 - [ ] README:
-  - [ ] sezione “Limitations / Support” (bounds semplice, no pinch, no DOM restore se crea viewport, ecc.).
+  - [ ] sezione "Limitations / Support" (bounds semplice, no pinch, no DOM restore se crea viewport, ecc.).
   - [ ] chiarire unità di misura di `state.x/y` (SVG user units).
   - [ ] esempi aggiornati e funzionanti (vanilla + React + Vue) e import CSS corretto.
-- [ ] TypeScript typings:
-  - [ ] `dist/index.d.ts` esiste e rispecchia API/options/events reali (come dichiarato in `exports`).
-- [ ] CHANGELOG:
-  - [ ] entry della release stabile con note (anche “nessuna breaking change” se vero).
+- [x] TypeScript typings:
+  - [x] `dist/index.d.ts` esiste e rispecchia API/options/events reali (come dichiarato in `exports`).
+- [x] CHANGELOG:
+  - [x] entry della release stabile con note (anche "nessuna breaking change" se vero).
 
 ---
 
@@ -104,7 +103,7 @@ Spunta i punti man mano che vengono completati.
 ---
 
 ## 8) Preparazione release GitHub + npm (operativa)
-- [ ] Allineare versione (cartella “0.5.0” vs `package.json` `0.4.0`) e decidere target (es. `1.0.0`).
+- [x] Allineare versione (cartella "0.5.0" vs `package.json` `0.4.0`) e decidere target (es. `1.0.0`).
 - [ ] `npm pack` (o `pnpm pack`) produce un tarball corretto e contiene solo `dist/`.
 - [ ] Tag git `vX.Y.Z` creato e pushato.
 - [ ] GitHub Release creata (note + changelog).

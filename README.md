@@ -4,15 +4,24 @@
 
 Goal: framework-free core, simple API, built as an npm package.
 
-> Status: **v1.0.0** — 🎉 First stable release with frozen API, TypeScript support, and comprehensive test coverage.
+> Status: **v1.0.1** — 🎉 Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
 
 **Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 
 ## Install
 
 ```bash
-npm i svg-panzoom
+npm i @riky1/svg-panzoom
 ```
+
+### Source Code Transparency
+
+The full source code is included in every npm package for security verification and audit purposes:
+
+- ✅ **Source code available**: All source files (`src/`) are distributed with the package
+- ✅ **Public repository**: Code available at https://github.com/riky1/svg-panzoom for independent verification
+- ✅ **Security verification**: Security scanners (e.g., socket.dev) can verify package integrity and source transparency
+- ✅ **MIT Licensed**: Open-source license for complete transparency and community trust
 
 ## Usage
 

@@ -4,6 +4,21 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-05-20
+
+### Security
+
+- **Source code availability**: Full source code is included in the npm package (`src/` directory) for transparency and security verification.
+  - All source files are listed in `package.json` `files` field for complete source code distribution.
+  - Repository is publicly available at https://github.com/riky1/svg-panzoom for code audit and verification.
+  - Security scanners (e.g., socket.dev) can verify package integrity and source transparency.
+
+### Changed
+
+- Package name changed to `@riky1/svg-panzoom` (scoped package on npm).
+
+---
+
 ## [1.0.0] - 2026-05-20
 
 ### 🎉 First Stable Release

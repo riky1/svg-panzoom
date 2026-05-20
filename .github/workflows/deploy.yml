@@ -15,6 +15,11 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  # Opt-in early to Node.js 24 for JavaScript-based GitHub Actions.
+  # This avoids the Node.js 20 deprecation warnings and upcoming forced migration.
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build-and-deploy:
     environment:

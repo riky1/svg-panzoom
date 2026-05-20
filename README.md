@@ -4,7 +4,7 @@
 
 Goal: framework-free core, simple API, built as an npm package.
 
-> Status: **v0.5.0** — First stable release with frozen API, TypeScript support, and comprehensive test coverage.
+> Status: **v1.0.0** — 🎉 First stable release with frozen API, TypeScript support, and comprehensive test coverage.
 
 **Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 

@@ -1,6 +1,6 @@
 {
   "name": "svg-panzoom",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Framework-agnostic SVG zoom & pan for inline SVG elements.",
   "type": "module",
   "author": "riky1 (Riccardo Cresti)",
@@ -44,11 +44,16 @@
     "build": "vite build --config vite.config.js",
     "preview": "vite preview --config vite.config.js",
     "build:demo": "BUILD_MODE=demo vite build --config vite.config.js",
-    "dev:demo": "BUILD_MODE=demo vite --config vite.config.js"
+    "dev:demo": "BUILD_MODE=demo vite --config vite.config.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
+    "jsdom": "^24.0.0",
     "sass": "^1.78.0",
-    "vite": "^5.4.0"
+    "vite": "^5.4.0",
+    "vitest": "^1.0.0"
   },
   "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
 }

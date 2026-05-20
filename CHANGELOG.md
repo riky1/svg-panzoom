@@ -4,6 +4,35 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-05-20
+
+### Added
+
+- **TypeScript support**: comprehensive type definitions (`dist/index.d.ts`) for all public API, options, events, and state.
+- **Unit tests**: full test suite with Vitest covering core engine, state normalization, utilities, and DOM integration.
+- **JSDoc documentation**: inline documentation for all public APIs in `src/index.js`.
+- **API stability**: frozen public API with documented contract:
+  - Explicit support for **inline SVG in DOM** (no external SVG files or `<object>` elements).
+  - Defined browser compatibility baseline (Chrome, Firefox, Safari, iOS Safari).
+  - Viewport selection behavior and automatic `<g data-spz-viewport>` generation documented.
+
+### Changed
+
+- `package.json`: version bumped to `0.5.0` (first stable release).
+- Improved robustness: `destroy()` verified as idempotent with complete cleanup (pointer/wheel/keyboard listeners, ResizeObserver, RAF loop).
+
+### Fixed
+
+- Edge cases in coordinate conversion, bounds validation, and input event handling tested and stabilized.
+
+### Notes
+
+- This is the **first stable release** with frozen API and comprehensive test coverage.
+- No breaking changes from previous versions.
+- Future releases will maintain API compatibility or clearly document deprecations.
+
+---
+
 ## [0.4.0] - 2026-05-20
 
 ### Added

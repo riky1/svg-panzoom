@@ -1,12 +1,12 @@
 # svg-panzoom
 
-**Demo:** https://riky1.github.io/svg-panzoom/
-
 **Framework-agnostic** library (JavaScript ES Modules) for adding **pan (drag)** and **zoom (wheel)** to inline SVG in the DOM.
 
 Goal: framework-free core, simple API, built as an npm package.
 
 > Status: MVP (v0.3) — drag pan + wheel zoom + base methods + simple bounds.
+
+**Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 
 ## Install
 

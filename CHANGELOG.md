@@ -4,6 +4,40 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] - 2026-05-20
+
+### 🎉 First Stable Release
+
+This is the **first stable release** of svg-panzoom. The library is production-ready with a frozen API, comprehensive test coverage, and complete documentation.
+
+### Added
+
+- **Complete TypeScript support**: Full type definitions covering all public API, options, events, and state management.
+- **Comprehensive test suite**: Unit and DOM integration tests with Vitest covering core functionality and edge cases.
+- **Production-ready API**: Frozen public interface with documented contract for long-term stability.
+- **Browser compatibility baseline**: Officially supports Chrome, Firefox, Safari, and iOS Safari (latest versions).
+- **Detailed documentation**: 
+  - "Understanding Coordinates" guide for SVG user units vs screen pixels.
+  - "Limitations & Browser Support" section documenting constraints and future roadmap.
+  - Complete API reference with JSDoc inline documentation.
+  - Examples for vanilla JS, React, and Vue frameworks.
+
+### No Breaking Changes
+
+- All features from v0.5.0 and earlier versions are fully supported.
+- API is backward compatible with previous releases.
+- Existing implementations can update without code changes.
+
+### Production Guarantees
+
+- ✅ Frozen API: no breaking changes without major version bump.
+- ✅ Robust cleanup: `destroy()` safely removes all listeners and resources.
+- ✅ Tested invariants: core engine (zoom/pan/bounds) thoroughly tested.
+- ✅ Documentation complete: all features, limitations, and use cases documented.
+- ✅ Framework agnostic: works with vanilla JS, React, Vue, and other frameworks.
+
+---
+
 ## [0.5.0] - 2026-05-20
 
 ### Added

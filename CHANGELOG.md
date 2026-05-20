@@ -15,10 +15,16 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
   - Explicit support for **inline SVG in DOM** (no external SVG files or `<object>` elements).
   - Defined browser compatibility baseline (Chrome, Firefox, Safari, iOS Safari).
   - Viewport selection behavior and automatic `<g data-spz-viewport>` generation documented.
+- **Documentation enhancements** (README.md):
+  - New "Understanding Coordinates" section explaining SVG user units vs screen pixels.
+  - New "Limitations & Browser Support" section documenting known limitations, browser compatibility, and planned features.
+  - Clarified cleanup and memory management best practices.
+- **Release roadmap**: `STABLE_RELEASE_CHECKLIST.md` provides comprehensive checklist for reaching v1.0 stable release (8 sections, 31 items tracking API, robustness, tests, documentation, CI/release).
 
 ### Changed
 
 - `package.json`: version bumped to `0.5.0` (first stable release).
+- README.md: significantly expanded documentation for user clarity.
 - Improved robustness: `destroy()` verified as idempotent with complete cleanup (pointer/wheel/keyboard listeners, ResizeObserver, RAF loop).
 
 ### Fixed
@@ -30,6 +36,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
 - This is the **first stable release** with frozen API and comprehensive test coverage.
 - No breaking changes from previous versions.
 - Future releases will maintain API compatibility or clearly document deprecations.
+- Full release roadmap for v1.0 available in `STABLE_RELEASE_CHECKLIST.md` (~39% complete, 12/31 items).
 
 ---
 

@@ -75,10 +75,10 @@ Questa checklist serve per arrivare a una **v1 base stabile** di `svg-panzoom`, 
 ---
 
 ## 6) Documentazione pronta per utenti
-- [ ] README:
-  - [ ] sezione "Limitations / Support" (bounds semplice, no pinch, no DOM restore se crea viewport, ecc.).
-  - [ ] chiarire unità di misura di `state.x/y` (SVG user units).
-  - [ ] esempi aggiornati e funzionanti (vanilla + React + Vue) e import CSS corretto.
+- [x] README:
+  - [x] sezione "Limitations / Support" (bounds semplice, no pinch, no DOM restore se crea viewport, ecc.).
+  - [x] chiarire unità di misura di `state.x/y` (SVG user units).
+  - [x] esempi aggiornati e funzionanti (vanilla + React + Vue) e import CSS corretto.
 - [x] TypeScript typings:
   - [x] `dist/index.d.ts` esiste e rispecchia API/options/events reali (come dichiarato in `exports`).
 - [x] CHANGELOG:

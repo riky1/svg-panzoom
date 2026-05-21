@@ -4,6 +4,19 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.5] - 2026-05-21
+
+### Fixed
+
+- **CSS export now properly generated**: Fixed missing `style.css` file in `dist/` folder. The package was configured to export `./style.css` via `package.json` exports field, but the build process was not generating the CSS file. This caused import errors when using `import 'svg-panzoom/style.css'` in external applications.
+
+### Changed
+
+- Updated Vite configuration to properly extract and output CSS from SCSS source files to `dist/style.css`
+- Created dedicated CSS entry point at `src/styles/index.scss` 
+- Modified `src/index.js` to import SCSS styles, ensuring CSS is bundled during library build
+- Added `assetFileNames` configuration to rollup output to ensure consistent CSS filename
+
 ## [1.1.4] - 2026-05-21
 
 ### Changed

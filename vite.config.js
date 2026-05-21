@@ -22,7 +22,18 @@ export default defineConfig({
       // No external deps in core for now
       external: [],
       output: {
-        exports: 'named'
+        exports: 'named',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') return 'style.css';
+          return assetInfo.name;
+        }
+      }
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "sass:math";`
       }
     }
   },

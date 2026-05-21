@@ -5,6 +5,7 @@ import { createState, normalizeOptions } from './core/state.js';
 import { mount } from './dom/mount.js';
 import { createObserver } from './dom/observer.js';
 import { createRenderer } from './dom/renderer.js';
+import './styles/index.scss';
 
 /**
  * @typedef {Object} BoundsConfig

@@ -1,0 +1,53 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+.spz {
+  position: relative;
+  display: block;
+  overflow: hidden;
+
+  // prevent text selection while panning
+  user-select: none;
+
+  // allow custom touch gestures (pan, pinch zoom)
+  touch-action: none;
+}
+
+.spz__canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.spz__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  // nicer rendering during transforms
+  shape-rendering: geometricPrecision;
+
+  // allow custom touch gestures on SVG
+  touch-action: none;
+}
+
+.spz__viewport {
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.spz__controls {
+  position: absolute;
+  right: $spz-gap;
+  bottom: $spz-gap;
+  display: inline-flex;
+  gap: $spz-gap;
+  padding: $spz-gap;
+  border-radius: $spz-radius;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.spz__button {
+  @include spz-control-button;
+}

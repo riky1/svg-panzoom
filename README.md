@@ -4,7 +4,7 @@
 
 Goal: framework-free core, simple API, built as an npm package.
 
-> Status: **v1.1.6** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
+> Status: **v1.1.7** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
 
 **Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 
@@ -28,8 +28,8 @@ The full source code is included in every npm package for security verification 
 ### Vanilla (any framework)
 
 ```js
-import { createSvgPanZoom } from 'svg-panzoom';
-import 'svg-panzoom/style.css';
+import { createSvgPanZoom } from '@riky1/svg-panzoom';
+import '@riky1/svg-panzoom/style.css';
 
 const instance = createSvgPanZoom({
   element: document.querySelector('#myContainerOrSvg'),
@@ -62,8 +62,8 @@ const instance = createSvgPanZoom({
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { createSvgPanZoom } from 'svg-panzoom';
-import 'svg-panzoom/style.css';
+import { createSvgPanZoom } from '@riky1/svg-panzoom';
+import '@riky1/svg-panzoom/style.css';
 
 const containerRef = ref(null);
 const instance = ref(null);
@@ -87,8 +87,8 @@ onBeforeUnmount(() => {
 
 ```jsx
 import { useRef, useEffect } from 'react';
-import { createSvgPanZoom } from 'svg-panzoom';
-import 'svg-panzoom/style.css';
+import { createSvgPanZoom } from '@riky1/svg-panzoom';
+import '@riky1/svg-panzoom/style.css';
 
 export default function SvgPanZoom() {
   const containerRef = useRef(null);

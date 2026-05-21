@@ -30,8 +30,8 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { createSvgPanZoom } from 'svg-panzoom';
-import 'svg-panzoom/style.css';
+import { createSvgPanZoom } from '@riky1/svg-panzoom';
+import '@riky1/svg-panzoom/style.css';
 
 const containerRef = ref(null);
 const instance = ref(null);

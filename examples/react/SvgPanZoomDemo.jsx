@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
-import { createSvgPanZoom } from 'svg-panzoom';
-import 'svg-panzoom/style.css';
+import { createSvgPanZoom } from '@riky1/svg-panzoom';
+import '@riky1/svg-panzoom/style.css';
 import './SvgPanZoomDemo.css';
 
 export default function SvgPanZoomDemo() {

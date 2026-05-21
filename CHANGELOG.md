@@ -4,6 +4,23 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.7] - 2026-05-21
+
+### Fixed
+
+- **Examples package name correction**: Fixed incorrect package name in all example files and documentation
+  - Updated `examples/vue/SvgPanZoomDemo.vue` to use correct package name `@riky1/svg-panzoom` instead of `svg-panzoom`
+  - Updated `examples/react/SvgPanZoomDemo.jsx` to use correct package name `@riky1/svg-panzoom` instead of `svg-panzoom`
+  - Updated `examples/basic/main.js` to use local source files (`../../src/index.js`) for development testing with Vite dev server
+  - Updated all code examples in README.md to use correct scoped package name `@riky1/svg-panzoom`
+
+### Documentation
+
+- Clarified that `examples/basic/` requires Vite dev server (`npm run dev`) to process SCSS imports, not Live Server
+- Examples now correctly demonstrate the difference between:
+  - Development testing (using local source files in `/examples/basic/`)
+  - External project integration (using published npm package `@riky1/svg-panzoom` in Vue/React examples)
+
 ## [1.1.6] - 2026-05-21
 
 ### Added

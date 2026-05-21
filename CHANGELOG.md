@@ -4,6 +4,12 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.3] - 2026-05-21
+
+### Changed
+
+- Updated README.md with current version reference (v1.1.2 → v1.1.3)
+
 ## [1.1.2] - 2026-05-21
 
 ### Fixed

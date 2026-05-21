@@ -4,7 +4,7 @@
 
 Goal: framework-free core, simple API, built as an npm package.
 
-> Status: **v1.1.3** — 🎉 Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
+> Status: **v1.1.4** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
 
 **Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 
@@ -144,7 +144,7 @@ instance.destroy();
 
 ### Recommended markup (viewport)
 
-To apply the transformation to an internal group:
+To apply the transformation to an internal group add `data-spz-viewport="true"` to the first `<g>` element:
 
 ```html
 <svg viewBox="0 0 800 450">
@@ -314,3 +314,6 @@ Output:
 - React/Vue wrappers
 - Optional UI controls
 - Advanced animations / easing
+
+## License
+MIT

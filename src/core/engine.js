@@ -336,6 +336,16 @@ export function createEngine(ctx) {
     zoomTo(scale, originPx = null) {
       setZoomSmooth(scale, originPx);
     },
+    /**
+     * Set scale instantly without animation (used for pinch zoom).
+     * @param {number} scale
+     * @param {{x:number,y:number} | null} originPx
+     */
+    setScale(scale, originPx = null) {
+      stopZoomAnimation();
+      stopZoomInertia();
+      setZoomInstant(scale, originPx);
+    },
     wheelZoomBy,
     panBy,
     panTo,

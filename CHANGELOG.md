@@ -4,6 +4,17 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.2] - 2026-05-21
+
+### Fixed
+
+- **Improved pinch zoom responsiveness and fluidity on touch devices**: Pinch zoom now updates in real-time during the gesture, providing smooth and continuous feedback. The previous implementation used animated zoom transitions (`zoomTo`) which delayed visual updates until the end of the gesture. The new implementation uses instant scale updates (`setScale`) for immediate response to finger movements.
+
+### Changed
+
+- Added `setScale(scale, origin)` method to engine for instant zoom updates without animation (optimized for high-frequency pinch zoom events)
+- Pinch zoom gesture now uses `setScale()` instead of `zoomTo()` for fluid real-time updates
+
 ## [1.1.1] - 2026-05-21
 
 ### Fixed

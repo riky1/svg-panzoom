@@ -170,8 +170,9 @@ export function createGestures(ctx) {
           const origin = getOriginFromEvent(syntheticEvent);
 
           // Apply zoom instantly (no animation during pinch for fluid gesture)
-          if (typeof engine.zoomTo === 'function') {
-            engine.zoomTo(targetScale, origin);
+          // Use setScale() instead of zoomTo() for immediate update
+          if (typeof engine.setScale === 'function') {
+            engine.setScale(targetScale, origin);
           }
         }
 

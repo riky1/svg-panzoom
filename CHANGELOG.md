@@ -4,6 +4,19 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.6] - 2026-05-21
+
+### Added
+
+- **TypeScript declaration file**: Added comprehensive TypeScript type definitions (`dist/index.d.ts`)
+  - Full type definitions for all public API methods and configuration options
+  - Proper TypeScript support for better IDE autocompletion and type safety
+  - JSDoc comments with usage examples for improved developer experience
+
+### Fixed
+
+- Resolved TypeScript import warning when using the library in TypeScript projects
+
 ## [1.1.5] - 2026-05-21
 
 ### Fixed

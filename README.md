@@ -1,6 +1,6 @@
 # svg-panzoom
 
-**Framework-agnostic** library (JavaScript ES Modules) for adding **pan (drag)** and **zoom (wheel)** to inline SVG in the DOM.
+**Framework-agnostic** library (JavaScript ES Modules) for adding **pan (drag)**, **zoom (wheel)**, and **pinch zoom (touch)** to inline SVG in the DOM.
 
 Goal: framework-free core, simple API, built as an npm package.
 
@@ -195,6 +195,7 @@ Instance methods:
 - `wheelZoomIntensity` `number` (default `0.003`)
 - `wheelZoom` `boolean` (default `true`)
 - `panEnabled` `boolean` (default `true`)
+- `pinchZoom` `boolean` (default `true`)
 - `inertiaPan` `boolean` (default `true`)
 - `inertiaDuration` `number` (default `300`)
 - `inertiaFriction` `number` (default `0.92`)
@@ -265,7 +266,7 @@ Tested and supported:
 ### Known limitations and planned features
 
 - **DOM restoration**: When the library creates a `<g data-spz-viewport>` automatically, calling `destroy()` does **not** restore the original DOM structure. Workaround: provide an explicit `viewportSelector` if you need precise control.
-- **Pinch zoom**: Multi-touch pinch gesture is not yet supported (planned for v2). Single-touch pan works on mobile.
+- **Pinch zoom**: Two-finger pinch gesture is now supported on touch devices. Requires Pointer Events support and inline SVG in the DOM. Can be disabled with `pinchZoom: false`.
 - **Custom easing**: Animation uses linear interpolation; custom easing functions are not yet supported (planned for v2).
 - **Bounds**: Current bounds implementation is MVP (screen-space only). Advanced bounds with rotation or skew are not supported.
 - **Mouse wheel normalization**: Wheel event delta normalization is minimal (supports `deltaMode` 0/1/2). Advanced wheel behaviors may vary across browsers.
@@ -310,7 +311,6 @@ Output:
 
 - Bounds: currently simple and in screen-space (MVP).
 - DOM restoration: if a viewport `<g>` is created, calling `destroy()` does not restore the original structure (v2).
-- Pinch zoom (multiple Pointer Events)
 - React/Vue wrappers
 - Optional UI controls
 - Advanced animations / easing

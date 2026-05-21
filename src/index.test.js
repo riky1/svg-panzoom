@@ -72,9 +72,16 @@ describe('svg-panzoom Public API v1.0', () => {
       expect(opts.zoomDuration).toBe(200);
       expect(opts.wheelZoom).toBe(true);
       expect(opts.panEnabled).toBe(true);
+      expect(opts.pinchZoom).toBe(true);
       expect(opts.inertiaPan).toBe(true);
       expect(opts.inertiaDuration).toBe(300);
       expect(opts.inertiaFriction).toBe(0.92);
+    });
+
+    it('should allow disabling pinchZoom option', () => {
+      instance = createSvgPanZoom({ element: svg, pinchZoom: false });
+      const opts = instance.getOptions();
+      expect(opts.pinchZoom).toBe(false);
     });
   });
 

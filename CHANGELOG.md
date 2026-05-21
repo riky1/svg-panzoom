@@ -4,6 +4,29 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-05-21
+
+### Added
+
+- **Pinch zoom support** for touch devices using two-finger gestures
+- New `pinchZoom` option (default: `true`) to enable/disable pinch zoom functionality
+- Multi-pointer tracking and state management for robust gesture handling
+- Proper coordinate conversion for pinch zoom origin (midpoint between fingers)
+
+### Changed
+
+- Gesture handling now supports simultaneous tracking of multiple pointers
+- Single-finger pan is automatically cancelled when entering pinch mode
+- Event handlers now use `pointercancel` for better cleanup on gesture interruptions
+
+### Fixed
+
+- Improved pointer state transitions when switching between single-finger pan and two-finger pinch
+- Better cleanup of gesture state in `destroy()` method
+- Touch-action styling now properly set to 'none' for custom gesture handling
+
+---
+
 ## [1.0.1] - 2026-05-20
 
 ### Security

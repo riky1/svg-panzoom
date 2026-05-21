@@ -19,6 +19,7 @@ export const DEFAULT_OPTIONS = Object.freeze({
 
   wheelZoom: true,
   panEnabled: true,
+  pinchZoom: true,
 
   bounds: {
     enabled: true,

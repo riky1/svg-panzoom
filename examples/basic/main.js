@@ -1,5 +1,5 @@
 import { createSvgPanZoom } from '../../src/index.js';
-// import '../../src/styles/svg-panzoom.scss';
+import '../../src/styles/svg-panzoom.scss';
 
 const demo = document.querySelector('#demo');
 

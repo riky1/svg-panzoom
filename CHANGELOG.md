@@ -4,6 +4,12 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] - 2026-05-21
+
+### Fixed
+
+- Added `touch-action: none` CSS property to enable pinch zoom on mobile devices. Without this property, browsers prevent custom touch gestures in favor of default behaviors (e.g., page zoom, scroll).
+
 ## [1.1.0] - 2026-05-21
 
 ### Added

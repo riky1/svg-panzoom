@@ -8,6 +8,9 @@
 
   // prevent text selection while panning
   user-select: none;
+
+  // allow custom touch gestures (pan, pinch zoom)
+  touch-action: none;
 }
 
 .spz__canvas {
@@ -23,6 +26,9 @@
 
   // nicer rendering during transforms
   shape-rendering: geometricPrecision;
+
+  // allow custom touch gestures on SVG
+  touch-action: none;
 }
 
 .spz__viewport {

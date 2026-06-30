@@ -129,18 +129,32 @@ export function createSvgPanZoom(options) {
     const ctm = mounted.svgEl.getScreenCTM?.();
     const svgPxRatio = ctm && Number.isFinite(ctm.a) && ctm.a > 0 ? ctm.a : 1;
 
+    // Letterbox/pillarbox offset: when the container's aspect ratio differs from the
+    // SVG viewBox aspect ratio, the browser centres the viewBox inside the SVG element
+    // using xMidYMid meet.  ctm.e / ctm.f hold the screen-space origin of SVG (0,0).
+    // The offset relative to the container tells us where the viewBox starts inside the
+    // container, which is essential for correct fit/center/bounds maths.
+    const letterboxX = ctm && Number.isFinite(ctm.e) ? ctm.e - containerRect.left : 0;
+    const letterboxY = ctm && Number.isFinite(ctm.f) ? ctm.f - containerRect.top : 0;
+
     state.size = {
       container: { width: containerRect.width, height: containerRect.height },
       svg: { width: mounted.svgEl.clientWidth, height: mounted.svgEl.clientHeight },
       viewportBBox: { x: bbox.x, y: bbox.y, width: bbox.width, height: bbox.height },
       /** screen px per SVG user unit (from getScreenCTM) */
-      svgPxRatio
+      svgPxRatio,
+      /** px offset of SVG viewBox origin from container left edge (letterbox/pillarbox) */
+      letterboxX,
+      /** px offset of SVG viewBox origin from container top edge (letterbox/pillarbox) */
+      letterboxY
     };
 
     engine.setMeasurements(state.size);
   }
 
   // renderer needs engine, engine needs requestRender.
+  /** @type {number | null} */
+  let resizeRafId = null;
   let renderer = null;
 
   const engine = createEngine({
@@ -158,9 +172,20 @@ export function createSvgPanZoom(options) {
   const observer = createObserver({
     element: mounted.containerEl,
     onResize: () => {
-      measure();
-      if (normalized.fitOnInit) engine.fit();
-      if (normalized.centerOnInit) engine.center();
+      // Defer measurement to the next animation frame.
+      // ResizeObserver (and window.resize) can fire before the browser has
+      // finished recalculating layout transforms, so getScreenCTM() may still
+      // return the old matrix.  If we measure immediately we get a stale
+      // svgPxRatio that makes fit/center math drift — typically placing the
+      // content at the bottom-right corner instead of the centre.
+      // Waiting one rAF guarantees a fresh layout snapshot.
+      if (resizeRafId != null) cancelAnimationFrame(resizeRafId);
+      resizeRafId = requestAnimationFrame(() => {
+        resizeRafId = null;
+        measure();
+        if (normalized.fitOnInit) engine.fit();
+        if (normalized.centerOnInit) engine.center();
+      });
     }
   });
 
@@ -222,13 +247,23 @@ export function createSvgPanZoom(options) {
   // init
   observer.bind();
   gestures.bind();
+
+  // Do a synchronous measure + render so there is something on screen immediately.
+  // Then re-measure + fit/center on the next animation frame: at script-execution
+  // time the browser may not have committed the first CSS layout yet, so
+  // getScreenCTM() can return a stale/wrong matrix.  Deferring one rAF guarantees
+  // a fresh layout snapshot and prevents the content from appearing at the wrong
+  // position (typically bottom-right) on the initial load.
   measure();
-
-  if (normalized.fitOnInit) engine.fit();
-  if (normalized.centerOnInit) engine.center();
-
-  // initial render
   renderer.requestRender();
+
+  if (normalized.fitOnInit || normalized.centerOnInit) {
+    requestAnimationFrame(() => {
+      measure();
+      if (normalized.fitOnInit) engine.fit();
+      if (normalized.centerOnInit) engine.center();
+    });
+  }
 
   let destroyed = false;
 
@@ -274,6 +309,10 @@ export function createSvgPanZoom(options) {
       if (destroyed) return;
       destroyed = true;
 
+      if (resizeRafId != null) {
+        cancelAnimationFrame(resizeRafId);
+        resizeRafId = null;
+      }
       gestures.unbind();
       observer.unbind();
       renderer.destroy();

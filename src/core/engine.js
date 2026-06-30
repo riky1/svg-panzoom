@@ -247,13 +247,13 @@ export function createEngine(ctx) {
   }
 
   function computeFit() {
-    const { container, viewportBBox, svgPxRatio = 1 } = state.size;
+    const { container, viewportBBox, svgPxRatio = 1, letterboxX = 0, letterboxY = 0 } = state.size;
     if (!container.width || !container.height || !viewportBBox.width || !viewportBBox.height) {
       return { scale: state.scale, x: state.x, y: state.y };
     }
 
-    // state.x / state.y are in SVG user units, so all geometry must be in the same space.
-    // container is in CSS px → convert to SVG user units by dividing by svgPxRatio.
+    // All pan/translate values are in SVG user units.
+    // The container dimensions in SVG user units:
     const containerSvgW = container.width / svgPxRatio;
     const containerSvgH = container.height / svgPxRatio;
 
@@ -261,11 +261,20 @@ export function createEngine(ctx) {
     const scaleY = containerSvgH / viewportBBox.height;
     const scale = clamp(Math.min(scaleX, scaleY), options.minZoom, options.maxZoom);
 
-    // Center content. viewportBBox.x/y handles cases where content doesn't start at (0,0).
     const contentW = viewportBBox.width * scale;
     const contentH = viewportBBox.height * scale;
-    const x = (containerSvgW - contentW) / 2 - viewportBBox.x * scale;
-    const y = (containerSvgH - contentH) / 2 - viewportBBox.y * scale;
+
+    // The container centre in SVG user units.
+    // When the SVG viewBox aspect ratio ≠ container aspect ratio the browser adds
+    // letterbox/pillarbox padding.  ctm.e/f encode the screen position of SVG (0,0),
+    // so the offset of SVG origin relative to the container edge is letterboxX/Y (CSS px).
+    // We must account for this so the content is truly centred in the *container*,
+    // not just in the SVG coordinate space.
+    const containerCenterSvgX = (container.width / 2 - letterboxX) / svgPxRatio;
+    const containerCenterSvgY = (container.height / 2 - letterboxY) / svgPxRatio;
+
+    const x = containerCenterSvgX - contentW / 2 - viewportBBox.x * scale;
+    const y = containerCenterSvgY - contentH / 2 - viewportBBox.y * scale;
 
     return { scale, x, y };
   }
@@ -296,17 +305,17 @@ export function createEngine(ctx) {
   function center() {
     stopZoomAnimation();
     stopZoomInertia();
-    const { container, viewportBBox, svgPxRatio = 1 } = state.size;
+    const { container, viewportBBox, svgPxRatio = 1, letterboxX = 0, letterboxY = 0 } = state.size;
     if (!container.width || !container.height || !viewportBBox.width || !viewportBBox.height) return;
 
-    // Convert container to SVG user units (same coordinate space as state.x/state.y).
-    const containerSvgW = container.width / svgPxRatio;
-    const containerSvgH = container.height / svgPxRatio;
+    // Container centre in SVG user units, accounting for letterbox/pillarbox offset.
+    const containerCenterSvgX = (container.width / 2 - letterboxX) / svgPxRatio;
+    const containerCenterSvgY = (container.height / 2 - letterboxY) / svgPxRatio;
 
     const contentW = viewportBBox.width * state.scale;
     const contentH = viewportBBox.height * state.scale;
-    const x = (containerSvgW - contentW) / 2 - viewportBBox.x * state.scale;
-    const y = (containerSvgH - contentH) / 2 - viewportBBox.y * state.scale;
+    const x = containerCenterSvgX - contentW / 2 - viewportBBox.x * state.scale;
+    const y = containerCenterSvgY - contentH / 2 - viewportBBox.y * state.scale;
     setPan(x, y);
 
     emit('center', getPublicState());

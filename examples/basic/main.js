@@ -11,7 +11,7 @@ const instance = createSvgPanZoom({
   wheelZoom: true,
   panEnabled: true,
   bounds: { enabled: true, padding: 20, overflow: true },
-  fitOnInit: true,
+  fitOnInit: false,
   centerOnInit: true
 });
 

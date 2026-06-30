@@ -23,7 +23,7 @@ export function applyBounds(pan, transform, size, boundsOpt) {
   const overflow =
     overflowRaw === true ? Infinity : Number.isFinite(overflowRaw) ? overflowRaw : 0;
 
-  const { container, viewportBBox, svgPxRatio = 1 } = size;
+  const { container, viewportBBox, svgPxRatio = 1, letterboxX = 0, letterboxY = 0 } = size;
 
   if (!container.width || !container.height || !viewportBBox.width || !viewportBBox.height) {
     return pan;
@@ -34,17 +34,23 @@ export function applyBounds(pan, transform, size, boundsOpt) {
   const containerH = container.height / svgPxRatio;
   const paddingSvg = padding / svgPxRatio;
 
+  // Container edges in SVG user units, accounting for letterbox/pillarbox offset.
+  // When container aspect ratio ≠ viewBox aspect ratio, the SVG origin (0,0) is offset
+  // from the container edge by letterboxX/Y CSS px.
+  const containerLeftSvg = -letterboxX / svgPxRatio;
+  const containerTopSvg = -letterboxY / svgPxRatio;
+
   const contentW = viewportBBox.width * transform.scale;
   const contentH = viewportBBox.height * transform.scale;
 
   // overflow === Infinity means no restriction at all
   if (overflow === Infinity) return pan;
 
-  const minX = Math.min(paddingSvg, containerW - contentW - paddingSvg) - overflow;
-  const maxX = Math.max(containerW - contentW - paddingSvg, paddingSvg) + overflow;
+  const minX = containerLeftSvg + Math.min(paddingSvg, containerW - contentW - paddingSvg) - overflow;
+  const maxX = containerLeftSvg + Math.max(containerW - contentW - paddingSvg, paddingSvg) + overflow;
 
-  const minY = Math.min(paddingSvg, containerH - contentH - paddingSvg) - overflow;
-  const maxY = Math.max(containerH - contentH - paddingSvg, paddingSvg) + overflow;
+  const minY = containerTopSvg + Math.min(paddingSvg, containerH - contentH - paddingSvg) - overflow;
+  const maxY = containerTopSvg + Math.max(containerH - contentH - paddingSvg, paddingSvg) + overflow;
 
   return {
     x: clamp(pan.x, minX, maxX),

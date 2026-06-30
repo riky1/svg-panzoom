@@ -4,6 +4,17 @@ All notable changes to **svg-panzoom** will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and versioning follows [Semantic Versioning](https://semver.org/).
 
+
+
+## [1.1.9] - 2026-06-30
+
+### Fixed
+
+- **Content centering when container and SVG `viewBox` have different aspect ratios**: when the aspect ratios differ the browser adds letterbox/pillarbox padding (`xMidYMid meet`). The previous `fit()`, `center()` and bounds logic ignored the resulting offset (`ctm.e`/`ctm.f`), placing content at the bottom-right instead of the centre.
+  - `measure()` now stores `letterboxX`/`letterboxY` (offset of SVG origin from container edge in CSS px).
+  - `computeFit()`, `center()` and `applyBounds()` use these values to correctly compute the container centre and pan limits in SVG user units.
+  - Initial `fit`/`center` is deferred to `requestAnimationFrame` to ensure `getScreenCTM()` is up to date at first render and on every resize.
+
 ## [1.1.8] - 2026-05-25
 
 ### Documentation

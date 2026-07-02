@@ -6,6 +6,34 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
 
 
 
+## [1.1.10] - 2026-07-02
+
+### Fixed
+
+- **`reset()` now restores the full initial view** (scale + position), not just the zoom level.
+  Previously, `reset()` always restored `{ scale: initialZoom, x: 0, y: 0 }`, placing the content
+  at the top-left corner even when `centerOnInit: true` or `fitOnInit: true` were set.
+  - Added `state.initial` (replaces the internal `state.fit` reference used by `reset()`) to hold
+    the complete transform snapshot captured after initialization completes.
+  - Added `engine.saveInitialState()` — snapshots `{ scale, x, y }` into `state.initial`; called
+    in `index.js` after `fitOnInit`/`centerOnInit` are applied, and again on every resize so the
+    reset target stays correct for the current viewport size.
+  - `fit()` now writes to `state.initial` (same object) so calling `fit()` programmatically still
+    makes `reset()` return to the fitted view.
+
+### Changed
+
+- **Basic example redesigned** (`examples/basic/`):
+  - New two-column layout: info panel on the left, live demo on the right.
+  - Info panel includes a short description of the library, interaction hints
+    (drag / scroll / pinch / toolbar buttons), and three syntax-highlighted code blocks
+    (Install, HTML markup, JavaScript) showing the minimum code needed to reproduce the example.
+  - Added GitHub repository link with inline GitHub mark icon.
+  - On phone screens (≤ 600 px) the demo appears above the info panel.
+  - `main.js` comments translated to English.
+
+---
+
 ## [1.1.9] - 2026-06-30
 
 ### Fixed

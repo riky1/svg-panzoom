@@ -1,71 +1,346 @@
 <!doctype html>
-<html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>svg-panzoom - basic</title>
-    <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      }
+<html lang="en">
 
-      .page {
-        height: 100%;
-        display: grid;
-        grid-template-rows: auto 1fr;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>svg-panzoom — Basic Example</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
 
-      header {
-        padding: 12px 16px;
-        border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-      }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #111827;
+      background: #f8fafc;
+    }
 
+    .page {
+      min-height: 100%;
+      /* display: grid;
+        grid-template-rows: auto 1fr; */
+    }
+
+    /* Header */
+    header {
+      padding: 10px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: auto;
+    }
+
+    .pkg-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1e293b;
+      letter-spacing: -0.3px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ede9fe;
+      color: #6d28d9;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .buttons-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      border-radius: 7px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #374151;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    /* Main layout */
+    .wrap {
+      display: flex;
+      flex-direction: column-reverse;
+      padding: 24px;
+      gap: 24px;
+    }
+
+    @media (min-width: 760px) {
       .wrap {
-        padding: 16px;
-        height: 100%;
-        box-sizing: border-box;
+        flex-direction: row;
+        gap: 24px;
       }
+    }
 
+    .demo-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Demo container */
+    .demo {
+      width: 100%;
+      height: 500px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    @media (min-width: 760px) {
       .demo {
-        width: 100%;
-        height: 500px;
+        
+        height: 80vh;
+      }
+    }
+
+    /* Info panel */
+    .info-panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    @media (min-width: 760px) {
+      .info-panel {
+        width: 460px;
+      }
+    }
+
+    .info-panel h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .info-panel p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #4b5563;
+    }
+
+      .github-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: #374151;
+        text-decoration: none;
+        padding: 5px 10px;
         border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        overflow: hidden;
-      }
-
-      .btn {
-        appearance: none;
-        border: 1px solid #cbd5e1;
-        background: #fff;
-        border-radius: 8px;
-        padding: 8px 10px;
-        cursor: pointer;
-      }
-      .btn:hover {
+        border-radius: 7px;
         background: #f8fafc;
+        transition: background 0.12s, border-color 0.12s, color 0.12s;
+        width: fit-content;
       }
-    </style>
-  </head>
-  <body>
-    <div class="page">
-      <header>
-        <strong>svg-panzoom basic</strong>
-        <button class="btn" id="zoomIn">Zoom In</button>
-        <button class="btn" id="zoomOut">Zoom Out</button>
-        <button class="btn" id="reset">Reset</button>
-        <button class="btn" id="fit">Fit</button>
-        <button class="btn" id="center">Center</button>
-      </header>
 
-      <div class="wrap">
+      .github-link:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+        color: #111827;
+      }
+
+      .github-link svg {
+        flex-shrink: 0;
+      }
+
+      .hints {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hints li {
+      font-size: 13px;
+      color: #374151;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+
+    .hints li .icon {
+      flex-shrink: 0;
+      width: 18px;
+      text-align: center;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #f1f5f9;
+      margin: 0;
+    }
+
+    .code-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+
+    /* Code blocks */
+    .code-block {
+      margin: 0;
+      padding: 14px 15px;
+      background: #0f172a;
+      border-radius: 9px;
+      font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+      font-size: 11.5px;
+      line-height: 1.75;
+      color: #cbd5e1;
+      overflow-x: auto;
+      white-space: pre;
+      tab-size: 2;
+    }
+
+    .code-block .c {
+      color: #4a5568;
+    }
+
+    .code-block .k {
+      color: #93c5fd;
+    }
+
+    .code-block .s {
+      color: #86efac;
+    }
+
+    .code-block .fn {
+      color: #fbbf24;
+    }
+
+    .code-block .at {
+      color: #c4b5fd;
+    }
+
+    .code-block .tg {
+      color: #fb923c;
+    }
+
+    .code-block .nm {
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="header-title">
+        <span class="pkg-name">svg-panzoom</span>
+        <span class="badge">basic</span>
+      </div>
+
+    </header>
+
+    <div class="wrap">
+
+      <!-- Info panel -->
+      <div class="info-panel">
+        <h2>Pan & Zoom for inline SVG</h2>
+        <p>
+          A framework-agnostic JavaScript library that adds <strong>drag&nbsp;to&nbsp;pan</strong>,
+          <strong>scroll&nbsp;to&nbsp;zoom</strong>, and <strong>pinch&nbsp;zoom</strong>
+          to any inline SVG element in the DOM.
+        </p>
+
+            <a
+              class="github-link"
+              href="https://github.com/riky1/svg-panzoom"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg width="16" height="16" viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+                />
+              </svg>
+              riky1/svg-panzoom
+            </a>
+
+            <ul class="hints">
+          <li><span class="icon">🖱</span> Drag to pan</li>
+          <li><span class="icon">⚙️</span> Scroll wheel to zoom</li>
+          <li><span class="icon">✌️</span> Pinch to zoom on touch devices</li>
+          <li><span class="icon">🎯</span> Use the toolbar buttons to control zoom & position</li>
+        </ul>
+
+        <hr class="divider" />
+
+        <div>
+          <div class="code-label">Install</div>
+          <pre class="code-block" id="code-install"></pre>
+        </div>
+
+        <div>
+          <div class="code-label">HTML markup</div>
+          <pre class="code-block" id="code-html"></pre>
+        </div>
+
+        <div>
+          <div class="code-label">JavaScript</div>
+          <pre class="code-block" id="code-js"></pre>
+        </div>
+      </div>
+
+      <!-- Demo -->
+      <div class="demo-wrapper">
+        <div class="buttons-actions">
+          <button class="btn" id="zoomIn">Zoom In</button>
+          <button class="btn" id="zoomOut">Zoom Out</button>
+          <button class="btn" id="reset">Reset</button>
+          <button class="btn" id="fit">Fit</button>
+          <button class="btn" id="center">Center</button>
+        </div>
         <div class="demo" id="demo">
+
           <svg viewBox="0 0 800 450" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -81,22 +356,78 @@
               <circle cx="200" cy="220" r="70" fill="#22c55e" opacity="0.85" />
               <circle cx="580" cy="220" r="95" fill="#ef4444" opacity="0.75" />
 
-              <path
-                d="M120 340 C 220 120, 460 120, 660 340"
-                fill="none"
-                stroke="#e5e7eb"
-                stroke-width="6"
-                opacity="0.9"
-              />
+              <path d="M120 340 C 220 120, 460 120, 660 340" fill="none" stroke="#e5e7eb" stroke-width="6"
+                opacity="0.9" />
 
-              <text x="60" y="100" fill="#e5e7eb" font-size="28">Drag to pan • Wheel to zoom</text>
-              <text x="60" y="140" fill="#e5e7eb" opacity="0.8" font-size="18">Uses outer group as viewport</text>
+              <text x="60" y="100" fill="#e5e7eb" font-size="28">Drag to pan · Scroll to zoom</text>
+              <text x="60" y="140" fill="#e5e7eb" opacity="0.7" font-size="18">Uses outer group as viewport</text>
             </g>
           </svg>
         </div>
       </div>
-    </div>
 
-    <script type="module" src="./main.js"></script>
-  </body>
+    </div>
+  </div>
+
+  <!-- Populate code blocks via JS so HTML entities are not touched by the formatter -->
+  <script>
+    // Use string concat to prevent the HTML formatter from unescaping < / >
+    var LT = '&' + 'lt;';
+    var GT = '&' + 'gt;';
+    var AMP = '&' + 'amp;';
+
+    function k(t) { return '<span class="k">' + t + '</span>'; }
+    function s(t) { return '<span class="s">' + t + '</span>'; }
+    function fn(t) { return '<span class="fn">' + t + '</span>'; }
+    function at(t) { return '<span class="at">' + t + '</span>'; }
+    function tg(t) { return '<span class="tg">' + t + '</span>'; }
+    function c(t) { return '<span class="c">' + t + '</span>'; }
+    function nm(t) { return '<span class="nm">' + t + '</span>'; }
+
+    document.getElementById('code-install').textContent = 'npm i @riky1/svg-panzoom';
+
+    document.getElementById('code-html').innerHTML = [
+      tg(LT + 'div') + ' ' + at('id') + '=' + s('"container"') + tg(GT),
+      '  ' + tg(LT + 'svg') + ' ' + at('viewBox') + '=' + s('"0 0 800 450"'),
+      '       ' + at('width') + '=' + s('"100%"') + ' ' + at('height') + '=' + s('"100%"') + tg(GT),
+      '    ' + tg(LT + 'g') + ' ' + at('data-spz-viewport') + '=' + s('"true"') + tg(GT),
+      '      ' + c(LT + '!-- your SVG content --' + GT),
+      '    ' + tg(LT + '/g' + GT),
+      '  ' + tg(LT + '/svg' + GT),
+      tg(LT + '/div' + GT),
+    ].join('\n');
+
+    document.getElementById('code-js').innerHTML = [
+      k('import') + ' { ' + fn('createSvgPanZoom') + ' } ' + k('from') + ' ' + s("'@riky1/svg-panzoom'") + ';',
+      k('import') + ' ' + s("'@riky1/svg-panzoom/style.css'") + ';',
+      '',
+      k('const') + ' ' + nm('instance') + ' = ' + fn('createSvgPanZoom') + '({',
+      '  ' + at('element') + ': document.' + fn('querySelector') + '(' + s("'#container'") + '),',
+      '  ' + at('viewportSelector') + ': ' + s("'[data-spz-viewport]'") + ',',
+      '  ' + at('maxZoom') + ': 6,',
+      '  ' + at('wheelZoom') + ': ' + k('true') + ',',
+      '  ' + at('panEnabled') + ': ' + k('true') + ',',
+      '  ' + at('bounds') + ': { ' + at('enabled') + ': ' + k('true') + ', ' + at('padding') + ': 20 },',
+      '  ' + at('initialZoom') + ': 0.5,',
+      '  ' + at('fitOnInit') + ': ' + k('false') + ',',
+      '  ' + at('centerOnInit') + ': ' + k('true') + ',',
+      '});',
+      '',
+      c('// Programmatic controls'),
+      'instance.' + fn('zoomIn') + '();',
+      'instance.' + fn('zoomOut') + '();',
+      'instance.' + fn('reset') + '();',
+      'instance.' + fn('fit') + '();',
+      'instance.' + fn('center') + '();',
+      '',
+      c('// Listen to events'),
+      'instance.' + fn('on') + '(' + s("'change'") + ', (state) =' + GT + ' {',
+      '  console.' + fn('log') + '(state); ' + c('// { scale, x, y, dragging, size }'),
+      '});',
+    ].join('\n');
+  </script>
+
+  <script type="module" src="./main.js"></script>
+</body>
+
 </html>

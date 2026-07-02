@@ -236,14 +236,23 @@ export function createEngine(ctx) {
   function reset() {
     stopZoomAnimation();
     stopZoomInertia();
-    // Restore the reference state captured the last time fit() was called
-    // (or the initial state if fit() was never called: { scale: initialZoom, x:0, y:0 }).
-    state.scale = state.fit.scale;
-    state.x = state.fit.x;
-    state.y = state.fit.y;
+    // Restore the initial view: the transform captured after init completed
+    // (accounts for fitOnInit, centerOnInit, and initialZoom).
+    state.scale = state.initial.scale;
+    state.x = state.initial.x;
+    state.y = state.initial.y;
     emit('reset', getPublicState());
     emit('change', getPublicState());
     requestRender();
+  }
+
+  /**
+   * Snapshot the current transform as the reset target.
+   * Called from index.js after fitOnInit/centerOnInit are applied (and on resize)
+   * so that reset() always restores the exact initial view for the current viewport.
+   */
+  function saveInitialState() {
+    state.initial = { scale: state.scale, x: state.x, y: state.y };
   }
 
   function computeFit() {
@@ -283,7 +292,7 @@ export function createEngine(ctx) {
     stopZoomAnimation();
     stopZoomInertia();
     const next = computeFit();
-    state.fit = { ...next };
+    state.initial = { ...next };
     state.scale = next.scale;
     state.x = next.x;
     state.y = next.y;
@@ -338,6 +347,9 @@ export function createEngine(ctx) {
       emit('measure', measurements);
       requestRender();
     },
+
+    // called by index.js after fitOnInit/centerOnInit to lock in the reset target
+    saveInitialState,
 
     // public API methods
     zoomIn,

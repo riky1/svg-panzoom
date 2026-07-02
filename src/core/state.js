@@ -108,8 +108,9 @@ export function createState(options) {
       viewportBBox: { x: 0, y: 0, width: 0, height: 0 }
     },
 
-    // Reference values for fit()/center()
-    fit: {
+    // Reference transform for reset(): captured once after init (fitOnInit/centerOnInit applied)
+    // and updated on resize so it always represents the correct initial view for the current size.
+    initial: {
       scale: options.initialZoom,
       x: 0,
       y: 0

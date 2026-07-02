@@ -185,6 +185,8 @@ export function createSvgPanZoom(options) {
         measure();
         if (normalized.fitOnInit) engine.fit();
         if (normalized.centerOnInit) engine.center();
+        // Re-snapshot reset target so reset() restores the correct view for the new size.
+        if (normalized.fitOnInit || normalized.centerOnInit) engine.saveInitialState();
       });
     }
   });
@@ -262,6 +264,9 @@ export function createSvgPanZoom(options) {
       measure();
       if (normalized.fitOnInit) engine.fit();
       if (normalized.centerOnInit) engine.center();
+      // Snapshot the final initial transform so reset() restores this exact view
+      // (not just initialZoom at x:0,y:0 — which ignores centerOnInit/fitOnInit).
+      engine.saveInitialState();
     });
   }
 

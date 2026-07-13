@@ -28,7 +28,10 @@ export const DEFAULT_OPTIONS = Object.freeze({
   },
 
   fitOnInit: false,
-  centerOnInit: false
+  centerOnInit: false,
+
+  keyboardNav: true,
+  keyStep: 10 // screen-px per arrow key press (adjusted for current zoom)
 });
 
 /**
@@ -73,6 +76,10 @@ export function normalizeOptions(opts = {}) {
   o.wheelZoomIntensity = Number.isFinite(o.wheelZoomIntensity)
     ? o.wheelZoomIntensity
     : DEFAULT_OPTIONS.wheelZoomIntensity;
+
+  o.keyboardNav =
+    typeof o.keyboardNav === 'boolean' ? o.keyboardNav : DEFAULT_OPTIONS.keyboardNav;
+  o.keyStep = Number.isFinite(o.keyStep) ? o.keyStep : DEFAULT_OPTIONS.keyStep;
 
   o.inertiaPan = typeof o.inertiaPan === 'boolean' ? o.inertiaPan : DEFAULT_OPTIONS.inertiaPan;
   o.inertiaDuration = Number.isFinite(o.inertiaDuration)

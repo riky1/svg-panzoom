@@ -1,6 +1,6 @@
 {
   "name": "@riky1/svg-panzoom",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Framework-agnostic SVG zoom & pan for inline SVG elements.",
   "type": "module",
   "author": "riky1 (Riccardo Cresti)",

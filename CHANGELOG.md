@@ -6,6 +6,27 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
 
 
 
+## [1.1.11] - 2026-07-13
+
+### Added
+
+- **Keyboard navigation** (`keyboardNav`, `keyStep` options):
+  - Arrow keys pan the view with smooth acceleration and inertial damping (frame-rate independent physics via `requestAnimationFrame`).
+  - `+` / `=` zoom in; `-` zooms out, centred on the viewport.
+  - New option `keyboardNav` `boolean` (default `true`) — enable/disable the feature entirely.
+  - New option `keyStep` `number` (default `10`) — pan step in screen-px per arrow key press, automatically scaled for the current zoom level so visual movement is always consistent.
+  - The container receives `tabindex="0"` automatically (only if not already set) to make it focusable.
+  - A centre crosshair indicator (`.spz__keyboard-indicator`) is displayed using the CSS `:focus-visible` pseudo-class: it appears only when focus is received via keyboard (Tab), not on mouse click.
+  - New event `keyboardNav` → `{ key, type }` emitted on each key action (`type`: `'pan'` | `'zoom'`).
+  - `destroy()` cleans up all keyboard event listeners and cancels any running animation loop.
+
+### Changed
+
+- Basic example (`examples/basic/main.js`) updated to include `keyboardNav: true` and `keyStep: 10` options and log the `keyboardNav` event.
+- README.md updated: `keyboardNav` and `keyStep` added to the Options table; `keyboardNav` event added to the Events list; Vanilla usage example updated; version badge updated to v1.1.11.
+
+---
+
 ## [1.1.10] - 2026-07-02
 
 ### Fixed

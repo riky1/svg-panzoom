@@ -13,6 +13,8 @@ const instance = createSvgPanZoom({
   initialZoom: 0.5,
   fitOnInit: false,
   centerOnInit: true,
+  keyboardNav: true,  // enable arrow-key pan + +/- zoom
+  keyStep: 10,        // screen-px per arrow key press (scaled to current zoom)
 });
 
 // Wire toolbar buttons
@@ -25,3 +27,4 @@ document.querySelector('#center').addEventListener('click', () => instance.cente
 // Optional event logging
 instance.on('zoom', (e) => console.log('zoom', e));
 instance.on('change', (s) => console.log('state', s));
+instance.on('keyboardNav', (e) => console.log('keyboardNav', e));

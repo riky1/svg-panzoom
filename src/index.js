@@ -1,6 +1,7 @@
 import { createEmitter } from './core/events.js';
 import { createEngine } from './core/engine.js';
 import { createGestures } from './core/gestures.js';
+import { createKeyboard } from './core/keyboard.js';
 import { createState, normalizeOptions } from './core/state.js';
 import { mount } from './dom/mount.js';
 import { createObserver } from './dom/observer.js';
@@ -34,6 +35,8 @@ import './styles/index.scss';
  * @property {BoundsConfig} [bounds] - Bounds configuration
  * @property {boolean} [fitOnInit=false] - Auto-fit content on init
  * @property {boolean} [centerOnInit=false] - Auto-center content on init
+ * @property {boolean} [keyboardNav=true] - Enable keyboard navigation (arrow keys + +/-)
+ * @property {number} [keyStep=50] - Pan step in screen-px per arrow key press
  */
 
 /**
@@ -246,9 +249,17 @@ export function createSvgPanZoom(options) {
     getOriginFromEvent
   });
 
+  const keyboard = createKeyboard({
+    containerEl: mounted.containerEl,
+    options: normalized,
+    engine,
+    emitter
+  });
+
   // init
   observer.bind();
   gestures.bind();
+  keyboard.bind();
 
   // Do a synchronous measure + render so there is something on screen immediately.
   // Then re-measure + fit/center on the next animation frame: at script-execution
@@ -319,6 +330,7 @@ export function createSvgPanZoom(options) {
         resizeRafId = null;
       }
       gestures.unbind();
+      keyboard.unbind();
       observer.unbind();
       renderer.destroy();
       emitter.clear();

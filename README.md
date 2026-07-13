@@ -4,7 +4,7 @@
 
 Goal: framework-free core, simple API, built as an npm package.
 
-> Status: **v1.1.10** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
+> Status: **v1.1.11** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
 
 **Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 
@@ -41,7 +41,9 @@ const instance = createSvgPanZoom({
   panEnabled: true,
   bounds: { enabled: true, padding: 20 },
   fitOnInit: true,
-  centerOnInit: true
+  centerOnInit: true,
+  keyboardNav: true, // arrow keys pan, +/- zoom (focus container with Tab)
+  keyStep: 10        // screen-px per arrow key press
 });
 ```
 
@@ -202,11 +204,14 @@ Instance methods:
 - `bounds` `{ enabled: boolean, padding: number, overflow?: number | boolean }` (default `{enabled:true,padding:0,overflow:0}`)
 - `fitOnInit` `boolean` (default `false`)
 - `centerOnInit` `boolean` (default `false`)
+- `keyboardNav` `boolean` (default `true`) — enable keyboard navigation (arrow keys pan, `+`/`-` zoom)
+- `keyStep` `number` (default `10`) — pan step in screen-px per arrow key press (automatically scaled for current zoom level)
 
 ### Events
 
 Custom events emitted by the instance:
 
+- `keyboardNav` → `{ key, type }` — emitted on each keyboard navigation action (`type`: `'pan'` or `'zoom'`)
 - `change` → `{ scale, x, y, dragging, size }`
 - `zoom` → `{ scale }`
 - `reset` → state

@@ -1,3 +1,5 @@
+import { getScrollHint } from './i18n.js';
+
 /**
  * Pointer/wheel gesture handling for the DOM layer.
  * This module is DOM-aware but does not directly mutate DOM; it calls engine methods.
@@ -44,6 +46,53 @@ export function createGestures(ctx) {
   let onPointerUp = null;
   /** @type {((e: WheelEvent)=>void) | null} */
   let onWheel = null;
+
+  // ── Ctrl+Wheel overlay ────────────────────────────────────────────────────
+  /** @type {HTMLElement | null} */
+  let overlayEl = null;
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  let overlayTimer = null;
+  /** @type {((e: KeyboardEvent)=>void) | null} */
+  let onKeyDownCtrl = null;
+
+  function createOverlay() {
+    // Only append to HTML elements; SVG containers cannot host HTML children.
+    if (containerEl instanceof SVGElement) return;
+    const el = document.createElement('div');
+    el.className = 'spz__scroll-overlay';
+    el.setAttribute('aria-hidden', 'true');
+    const hint = getScrollHint(options);
+    el.innerHTML =
+      '<div class="spz__scroll-overlay-inner">' +
+      '<span class="spz__scroll-overlay-text">' + hint + '</span>' +
+      '</div>';
+    containerEl.appendChild(el);
+    overlayEl = el;
+  }
+
+  function showOverlay() {
+    if (!overlayEl) return;
+    overlayEl.classList.add('spz__scroll-overlay--visible');
+    if (overlayTimer != null) clearTimeout(overlayTimer);
+    overlayTimer = setTimeout(hideOverlay, 1000);
+  }
+
+  function hideOverlay() {
+    if (!overlayEl) return;
+    overlayEl.classList.remove('spz__scroll-overlay--visible');
+    if (overlayTimer != null) {
+      clearTimeout(overlayTimer);
+      overlayTimer = null;
+    }
+  }
+
+  function destroyOverlay() {
+    hideOverlay();
+    if (overlayEl) {
+      overlayEl.remove();
+      overlayEl = null;
+    }
+  }
 
   function normalizeWheelDelta(e) {
     // minimal normalization: convert to pixels
@@ -109,6 +158,14 @@ export function createGestures(ctx) {
 
   function bind() {
     containerEl.style.touchAction = 'none'; // allow custom pan/zoom gestures (MVP)
+
+    if (options.ctrlWheelZoom) {
+      createOverlay();
+      onKeyDownCtrl = (e) => {
+        if (e.key === 'Control') hideOverlay();
+      };
+      window.addEventListener('keydown', onKeyDownCtrl);
+    }
 
     onPointerDown = (e) => {
       if (e.button !== 0) return; // left click only (mouse); pointer for touch has button=0
@@ -265,7 +322,18 @@ export function createGestures(ctx) {
 
     onWheel = (e) => {
       if (!options.wheelZoom) return;
-      // Only zoom if cursor is over the container
+
+      // If ctrlWheelZoom is enabled, only zoom when Ctrl key is held.
+      // Without Ctrl, show the hint overlay and let the page scroll normally.
+      if (options.ctrlWheelZoom && !e.ctrlKey) {
+        showOverlay();
+        return;
+      }
+
+      // Ctrl is held (or ctrlWheelZoom is disabled): hide overlay and zoom.
+      if (options.ctrlWheelZoom) hideOverlay();
+
+      // Prevent default scroll/zoom only when we are actually handling the event.
       e.preventDefault();
 
       const { dy } = normalizeWheelDelta(e);
@@ -301,6 +369,12 @@ export function createGestures(ctx) {
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerUp);
     }
+    if (onKeyDownCtrl) {
+      window.removeEventListener('keydown', onKeyDownCtrl);
+      onKeyDownCtrl = null;
+    }
+
+    destroyOverlay();
 
     onPointerDown = null;
     onPointerMove = null;

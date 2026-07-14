@@ -4,7 +4,7 @@
 
 Goal: framework-free core, simple API, built as an npm package.
 
-> Status: **v1.1.12** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
+> Status: **v1.1.13** — Stable release with source code transparency, frozen API, TypeScript support, and comprehensive test coverage.
 
 **Demo:** <a href="https://riky1.github.io/svg-panzoom/" target="_blank" rel="noopener noreferrer">https://riky1.github.io/svg-panzoom/</a>
 
@@ -38,6 +38,7 @@ const instance = createSvgPanZoom({
   maxZoom: 6,
   zoomStep: 1.2,
   wheelZoom: true,
+  ctrlWheelZoom: true,   // zoom only with Ctrl+scroll; shows hint overlay otherwise
   panEnabled: true,
   bounds: { enabled: true, padding: 20 },
   fitOnInit: true,
@@ -196,6 +197,9 @@ Instance methods:
 - `zoomInertiaDuration` `number` (default `600`)
 - `wheelZoomIntensity` `number` (default `0.003`)
 - `wheelZoom` `boolean` (default `true`)
+- `ctrlWheelZoom` `boolean` (default `true`) — when `true`, the wheel only zooms if `Ctrl` is held; without `Ctrl` the page scrolls normally and a hint overlay is shown. Set to `false` to restore the classic "wheel always zooms" behaviour.
+- `scrollHint` `string | null` (default `null`) — override the hint overlay text with any HTML string (e.g. `'Hold <kbd>Ctrl</kbd> and scroll to zoom'`). Takes priority over all other resolution.
+- `scrollHintMessages` `Record<string, string> | null` (default `null`) — extend or override the built-in translation table with your own language codes (e.g. `{ pt: 'Use <kbd>Ctrl</kbd> + scroll para ampliar' }`).
 - `panEnabled` `boolean` (default `true`)
 - `pinchZoom` `boolean` (default `true`)
 - `inertiaPan` `boolean` (default `true`)
@@ -206,6 +210,42 @@ Instance methods:
 - `centerOnInit` `boolean` (default `false`)
 - `keyboardNav` `boolean` (default `true`) — enable keyboard navigation (arrow keys pan, `+`/`-` zoom)
 - `keyStep` `number` (default `10`) — pan step in screen-px per arrow key press (automatically scaled for current zoom level)
+
+### Ctrl+Wheel zoom & hint overlay
+
+By default (`ctrlWheelZoom: true`) the mouse wheel **only zooms when `Ctrl` is held**. Without `Ctrl` the wheel event is not consumed and the page scrolls as normal. A non-blocking dark overlay with a localised hint is shown over the map whenever the user scrolls without `Ctrl`; it fades out automatically after 1 second or immediately when `Ctrl` is pressed.
+
+**Localisation** — the hint text is resolved in this priority order:
+
+1. `scrollHint` option (explicit HTML string override)
+2. `scrollHintMessages[lang]` (developer-supplied map)
+3. Built-in table — `en`, `it`, `de` (uses `Strg`), `fr`, `es` — auto-detected from `<html lang="...">`
+4. English fallback
+
+```js
+// Default — language auto-detected from <html lang="it"> → Italian hint
+createSvgPanZoom({ element: document.querySelector('#map') });
+
+// Add a language not in the built-in table
+createSvgPanZoom({
+  element: document.querySelector('#map'),
+  scrollHintMessages: { pt: 'Use <kbd>Ctrl</kbd> + scroll para ampliar' }
+});
+
+// Fully override the hint text
+createSvgPanZoom({
+  element: document.querySelector('#map'),
+  scrollHint: 'Hold <kbd>Ctrl</kbd> and scroll to zoom'
+});
+
+// Disable — restore classic "wheel always zooms" behaviour
+createSvgPanZoom({
+  element: document.querySelector('#map'),
+  ctrlWheelZoom: false
+});
+```
+
+> **Note:** the overlay is injected only when `containerEl` is an HTML element (not an `<svg>` passed directly as `element`).
 
 ### Events
 

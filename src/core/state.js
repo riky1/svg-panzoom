@@ -18,6 +18,9 @@ export const DEFAULT_OPTIONS = Object.freeze({
   inertiaFriction: 0.92,
 
   wheelZoom: true,
+  ctrlWheelZoom: true,
+  scrollHint: null,
+  scrollHintMessages: null,
   panEnabled: true,
   pinchZoom: true,
 

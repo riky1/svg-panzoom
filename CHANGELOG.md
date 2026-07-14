@@ -6,6 +6,24 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
 
 
 
+## [1.1.13] - 2026-07-14
+
+### Added
+
+- **`ctrlWheelZoom` option** `boolean` (default `true`): when enabled, the mouse wheel only zooms when the `Ctrl` key is held. Without `Ctrl` the wheel event is not consumed and the page continues to scroll normally. This prevents the common UX problem where an embedded SVG map "traps" page scroll.
+- **Ctrl+Wheel hint overlay**: when `ctrlWheelZoom` is `true` and the user scrolls over the map without `Ctrl`, a non-blocking dark overlay appears inside the container with a localised hint message (e.g. *"Use Ctrl + scroll to zoom"*). The overlay fades out automatically after **1 second** of inactivity, or immediately when `Ctrl` is pressed.
+- **i18n / localisation** for the hint message (`src/core/i18n.js`):
+  - Built-in translations for `en`, `it`, `de` (`Strg`), `fr`, `es` — auto-detected from `<html lang="...">`.
+  - New option `scrollHintMessages` `Record<string, string>` — extend or override the built-in table for any language code.
+  - New option `scrollHint` `string` — fully override the hint with any HTML string (takes priority over all other resolution).
+  - Priority: `scrollHint` → `scrollHintMessages[lang]` → built-in table → English fallback.
+
+### Changed
+
+- `onWheel` handler in `src/core/gestures.js` now guards `e.preventDefault()` behind the Ctrl check: default scroll is only prevented when the library actually handles the zoom event.
+
+---
+
 ## [1.1.12] - 2026-07-13
 
 ### Fixed

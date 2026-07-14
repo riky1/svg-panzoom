@@ -6,6 +6,14 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
 
 
 
+## [1.1.12] - 2026-07-13
+
+### Fixed
+
+- **Keyboard indicator CSS missing from `dist/style.css`**: styles for `.spz__keyboard-indicator` and `.spz:focus-visible` were added to `src/styles/svg-panzoom.scss` but the library build entry point is `src/styles/index.scss` (imported by `src/index.js`). The keyboard navigation CSS rules have been added to `index.scss` so they are correctly included in the compiled `dist/style.css`. Consumers must import `@riky1/svg-panzoom/style.css` to get the focus indicator styles.
+
+---
+
 ## [1.1.11] - 2026-07-13
 
 ### Added

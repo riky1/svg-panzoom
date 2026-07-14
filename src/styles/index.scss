@@ -51,3 +51,61 @@
 .spz__button {
   @include spz-control-button;
 }
+
+// ─── Keyboard navigation ──────────────────────────────────────────────────────
+
+// Centre crosshair shown while the container has keyboard focus
+.spz__keyboard-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+
+  // Horizontal crosshair line
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.4);
+  }
+
+  // Vertical crosshair line
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Show indicator + focus ring only when focus was received via keyboard (Tab).
+// :focus-visible is set by the browser when focus comes from keyboard, NOT mouse click.
+.spz:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline-offset: -2px;
+
+  .spz__keyboard-indicator {
+    opacity: 1;
+  }
+}

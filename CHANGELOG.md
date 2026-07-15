@@ -6,6 +6,14 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/) and ve
 
 
 
+## [1.1.14] - 2026-07-15
+
+### Fixed
+
+- **Keyboard zoom origin**: `+` / `-` zoom from keyboard is now anchored to the container centre (crosshair indicator), instead of the top-left corner. This makes keyboard zoom consistent regardless of the current pan position.
+
+---
+
 ## [1.1.13] - 2026-07-14
 
 ### Added

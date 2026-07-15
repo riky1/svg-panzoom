@@ -21,6 +21,30 @@
 export function createKeyboard(ctx) {
   const { containerEl, options, engine, emitter } = ctx;
 
+  /**
+   * Compute the centre of the container in SVG user units, so keyboard zoom keeps
+   * the same "fixed point" as the on-screen crosshair indicator.
+   *
+   * We avoid relying on DOMPoint/getScreenCTM here to keep keyboard self-contained:
+   * engine.getState().size already contains the current svgPxRatio and letterbox offsets.
+   *
+   * @returns {{x:number,y:number} | null}
+   */
+  function getKeyboardZoomOriginCenter() {
+    const s = engine.getState?.().size;
+    if (!s || !s.container) return null;
+
+    const svgPxRatio = Number.isFinite(s.svgPxRatio) && s.svgPxRatio > 0 ? s.svgPxRatio : 1;
+    const letterboxX = Number.isFinite(s.letterboxX) ? s.letterboxX : 0;
+    const letterboxY = Number.isFinite(s.letterboxY) ? s.letterboxY : 0;
+
+    const cxSvg = (s.container.width / 2 - letterboxX) / svgPxRatio;
+    const cySvg = (s.container.height / 2 - letterboxY) / svgPxRatio;
+
+    if (!Number.isFinite(cxSvg) || !Number.isFinite(cySvg)) return null;
+    return { x: cxSvg, y: cySvg };
+  }
+
   /** @type {HTMLElement | null} */
   let indicatorEl = null;
 
@@ -144,16 +168,20 @@ export function createKeyboard(ctx) {
       }
 
       // Discrete zoom keys
+      // Expected behaviour: zoom must be anchored to the crosshair (container centre),
+      // regardless of current pan position.
+      const zoomOrigin = getKeyboardZoomOriginCenter();
+
       switch (e.key) {
         case '+':
         case '=':
           e.preventDefault();
-          engine.zoomIn();
+          engine.zoomIn(zoomOrigin);
           emitter.emit('keyboardNav', { key: e.key, type: 'zoom' });
           break;
         case '-':
           e.preventDefault();
-          engine.zoomOut();
+          engine.zoomOut(zoomOrigin);
           emitter.emit('keyboardNav', { key: e.key, type: 'zoom' });
           break;
       }

@@ -87,7 +87,7 @@ describe('svg-panzoom Public API v1.0', () => {
 
   describe('zoomIn()', () => {
     beforeEach(() => {
-      instance = createSvgPanZoom({ element: svg });
+      instance = createSvgPanZoom({ element: svg, zoomDuration: 0 });
     });
 
     it('should increase zoom level', () => {
@@ -123,7 +123,7 @@ describe('svg-panzoom Public API v1.0', () => {
 
   describe('zoomOut()', () => {
     beforeEach(() => {
-      instance = createSvgPanZoom({ element: svg, initialZoom: 2 });
+      instance = createSvgPanZoom({ element: svg, initialZoom: 2, zoomDuration: 0 });
     });
 
     it('should decrease zoom level', () => {
@@ -148,9 +148,45 @@ describe('svg-panzoom Public API v1.0', () => {
     });
   });
 
+  describe('keyboard zoom origin (container centre)', () => {
+    it('should keep the container centre anchored when zooming via engine with centre origin', () => {
+      instance = createSvgPanZoom({ element: container, keyboardNav: true, zoomDuration: 0 });
+
+      // Ensure a measure happened (createSvgPanZoom does a sync measure).
+      const s = instance.getState();
+      const svgPxRatio = Number.isFinite(s.size.svgPxRatio) && s.size.svgPxRatio > 0 ? s.size.svgPxRatio : 1;
+      const letterboxX = Number.isFinite(s.size.letterboxX) ? s.size.letterboxX : 0;
+      const letterboxY = Number.isFinite(s.size.letterboxY) ? s.size.letterboxY : 0;
+
+      const cxSvg = (s.size.container.width / 2 - letterboxX) / svgPxRatio;
+      const cySvg = (s.size.container.height / 2 - letterboxY) / svgPxRatio;
+      const origin = { x: cxSvg, y: cySvg };
+
+      // Convert SVG point -> screen px using current state: screen = pan + content*scale
+      // Note: state.x/y are in SVG user units (same units as origin).
+      const stateBefore = instance.getState();
+      const screenBefore = {
+        x: stateBefore.x + origin.x * stateBefore.scale,
+        y: stateBefore.y + origin.y * stateBefore.scale
+      };
+
+      // Zoom around the centre-origin. Keyboard now uses this origin.
+      instance.zoomIn(origin);
+
+      const stateAfter = instance.getState();
+      const screenAfter = {
+        x: stateAfter.x + origin.x * stateAfter.scale,
+        y: stateAfter.y + origin.y * stateAfter.scale
+      };
+
+      expect(screenAfter.x).toBeCloseTo(screenBefore.x, 4);
+      expect(screenAfter.y).toBeCloseTo(screenBefore.y, 4);
+    });
+  });
+
   describe('zoomTo(scale, origin?)', () => {
     beforeEach(() => {
-      instance = createSvgPanZoom({ element: svg });
+      instance = createSvgPanZoom({ element: svg, zoomDuration: 0 });
     });
 
     it('should set exact zoom level', () => {
@@ -303,7 +339,7 @@ describe('svg-panzoom Public API v1.0', () => {
 
   describe('getState()', () => {
     beforeEach(() => {
-      instance = createSvgPanZoom({ element: svg });
+      instance = createSvgPanZoom({ element: svg, zoomDuration: 0 });
     });
 
     it('should return current state object', () => {
